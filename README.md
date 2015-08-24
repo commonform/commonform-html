@@ -64,12 +64,12 @@ assert.equal(
       { reference: 'Elsewhere' }] },
     { },
     { html5: true }),
-  [ '<article>',
+  [ '<article>', // not <div class="article">
       '<p>',
         '<span>First text defines a </span>',
-        '<dfn>Term</dfn>',
+        '<dfn>Term</dfn>', // not <span class="definition">
       '</p>',
-      '<section>',
+      '<section>', // not <div class="section">
         '<h1>A</h1>',
         '<p><span>This is A</span></p>',
       '</section>',
