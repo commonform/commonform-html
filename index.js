@@ -1,6 +1,6 @@
 var escape = require('escape-html')
-var predicate = require('commonform-predicate')
 var group = require('commonform-group-series')
+var predicate = require('commonform-predicate')
 
 function renderParagraph(paragraph, blanks, html5) {
   return  (
@@ -73,7 +73,7 @@ module.exports = function commonformHTML(form, blanks, options) {
     blanks = { } }
   if (!options) {
     options = { } }
-  var html5 = ('html5' in options && options.html5 === true)
+  var html5 = ( 'html5' in options && options.html5 === true )
   return (
     ( html5 ? '<article>' : '<div class="article">' ) +
     renderForm(0, form, blanks, html5) +
