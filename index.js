@@ -8,10 +8,7 @@ function renderParagraph(paragraph, blanks, html5) {
     paragraph.content
       .map(function(element) {
         if (predicate.text(element)) {
-          return (
-            '<span>' +
-            escape(element) +
-            '</span>' ) }
+          return escape(element) }
         else if (predicate.use(element)) {
           return (
             '<span class="term">' +

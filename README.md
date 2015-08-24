@@ -9,7 +9,7 @@ var assert = require('assert')
 
 assert.equal(
   html({ content: [ 'Just a test' ] }),
-  '<div class="article"><p><span>Just a test</span></p></div>')
+  '<div class="article"><p>Just a test</p></div>')
 
 assert.equal(
   html({
@@ -21,11 +21,11 @@ assert.equal(
   [ '<div class="article">',
       '<div class="section">',
         '<h1>A</h1>',
-        '<p><span>This is A</span></p>',
+        '<p>This is A</p>',
       '</div>',
       '<div class="section">',
         '<h1>B</h1>',
-        '<p><span>This is B</span></p>',
+        '<p>This is B</p>',
       '</div>',
     '</div>' ]
     .join(''))
@@ -47,7 +47,7 @@ A final argument of `{ html5: true }` specifies HTML5 output:
 ```javascript
 assert.equal(
   html({ content: [ 'Just a test' ] }, { }, { html5: true }),
-  '<article><p><span>Just a test</span></p></article>')
+  '<article><p>Just a test</p></article>')
 
 assert.equal(
   html({
@@ -66,23 +66,23 @@ assert.equal(
     { html5: true }),
   [ '<article>', // not <div class="article">
       '<p>',
-        '<span>First text defines a </span>',
+        'First text defines a ',
         '<dfn>Term</dfn>', // not <span class="definition">
       '</p>',
       '<section>', // not <div class="section">
         '<h1>A</h1>',
-        '<p><span>This is A</span></p>',
+        '<p>This is A</p>',
       '</section>',
       '<p>',
-        '<span>Middle text uses a </span>',
+        'Middle text uses a ',
         '<span class="term">Term</span>',
       '</p>',
       '<section>',
         '<h1>B</h1>',
-        '<p><span>This is B</span></p>',
+        '<p>This is B</p>',
       '</section>',
       '<p>',
-        '<span>Last text references </span>',
+        'Last text references ',
         '<span class="reference">Elsewhere</span>',
       '</p>',
     '</article>' ]
