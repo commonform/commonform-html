@@ -71,7 +71,10 @@ module.exports = function commonformHTML(form, blanks, options) {
   if (!options) {
     options = { } }
   var html5 = ( 'html5' in options && options.html5 === true )
+  var title = ( 'title' in options ?
+    options.title : false )
   return (
     ( html5 ? '<article>' : '<div class="article">' ) +
-    renderForm(0, form, blanks, html5) +
+    ( title ? ( '<h1>' + escape(title) + '</h1>' ) : '' ) +
+    renderForm(( title ? 1 : 0 ), form, blanks, html5) +
     ( html5 ? '</article>' : '</div>' ) ) }

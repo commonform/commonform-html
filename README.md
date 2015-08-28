@@ -88,3 +88,21 @@ assert.equal(
     '</article>' ]
     .join(''))
 ```
+
+You can also set a title:
+
+```javascript
+assert.equal(
+  html(
+    { content: [ 'Hello, ', { blank: 'name' } ] },
+    { name: 'Joe' },
+    { title: 'Welcome' }),
+  [ '<div class="article">',
+      '<h1>Welcome</h1>',
+      '<p>',
+        'Hello, <span class="blank">Joe</span>',
+      '</p>',
+    '</div>' ]
+    .join('') )
+```
+
