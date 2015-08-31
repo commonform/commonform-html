@@ -42,7 +42,7 @@ function heading(depth, text) {
       '</h' + depth + '>' ) }
   else {
     return (
-      '<span class="h' + tag + '">' +
+      '<span class="h' + depth + '">' +
       escape(text) +
       '</span>' ) } }
 
@@ -50,7 +50,13 @@ function renderSeries(depth, series, blanks, html5) {
   return series.content
     .map(function(child) {
       return (
-        ( html5 ? '<section>' : '<div class="section">' ) +
+        ( html5 ?
+          ( child.form.conspicuous ?
+              '<section class="conspicuous">' :
+              '<section>' ) :
+          ( child.form.conspicuous ?
+              '<div class="section conspicuous">' :
+              '<div class="section">' ) ) +
         ( 'heading' in child ? heading(depth, child.heading) : '' ) +
         renderForm(depth, child.form, blanks, html5) +
         ( html5 ? '</section>' : '</div>' ) ) })
@@ -74,7 +80,13 @@ module.exports = function commonformHTML(form, blanks, options) {
   var title = ( 'title' in options ?
     options.title : false )
   return (
-    ( html5 ? '<article>' : '<div class="article">' ) +
+    ( html5 ?
+      ( form.conspicuous ?
+          '<article class="conspicuous">' :
+          '<article>' ) :
+      ( form.conspicuous ?
+          '<div class="article conspicuous">' :
+          '<div class="article">' ) ) +
     ( title ? ( '<h1>' + escape(title) + '</h1>' ) : '' ) +
     renderForm(( title ? 1 : 0 ), form, blanks, html5) +
     ( html5 ? '</article>' : '</div>' ) ) }
