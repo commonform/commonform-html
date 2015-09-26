@@ -1,6 +1,22 @@
 var escape = require('escape-html')
 var group = require('commonform-group-series')
 var predicate = require('commonform-predicate')
+var urlRegex = require('url-regex')
+
+function linkifyOne(text, link) {
+  return text.replace(link, "<a href=\"" + link + "\">" + link + "</a>")
+}
+
+function linkify(text) {
+  console.log("linkify() called")
+  if (urlRegex().test(text)) {
+    var matches = text.match(urlRegex())
+    matches.forEach( function(link) { text = linkifyOne(text, link) } )
+    return text
+  } else {
+    return text
+  }
+}
 
 function renderParagraph(paragraph, blanks, html5) {
   return  (
@@ -8,7 +24,7 @@ function renderParagraph(paragraph, blanks, html5) {
     paragraph.content
       .map(function(element) {
         if (predicate.text(element)) {
-          return escape(element) }
+          return escape(linkify(element)) }
         else if (predicate.use(element)) {
           return (
             '<span class="term">' +
@@ -23,8 +39,8 @@ function renderParagraph(paragraph, blanks, html5) {
           return (
             '<span class="blank">' +
             ( element.blank in blanks ?
-              escape(blanks[element.blank]) :
-              escape(element.blank) ) +
+              escape(blanks[linkify(element.blank)]) :
+              escape(linkify(element.blank)) ) +
             '</span>' ) }
         else if (predicate.reference(element)) {
           return (
