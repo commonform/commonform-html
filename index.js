@@ -8,7 +8,6 @@ function linkifyOne(text, link) {
 }
 
 function linkify(text) {
-  console.log("linkify() called")
   if (urlRegex().test(text)) {
     var matches = text.match(urlRegex())
     matches.forEach( function(link) { text = linkifyOne(text, link) } )
@@ -24,7 +23,7 @@ function renderParagraph(paragraph, blanks, html5) {
     paragraph.content
       .map(function(element) {
         if (predicate.text(element)) {
-          return escape(linkify(element)) }
+          return linkify(escape(element)) }
         else if (predicate.use(element)) {
           return (
             '<span class="term">' +
@@ -39,8 +38,8 @@ function renderParagraph(paragraph, blanks, html5) {
           return (
             '<span class="blank">' +
             ( element.blank in blanks ?
-              escape(blanks[linkify(element.blank)]) :
-              escape(linkify(element.blank)) ) +
+              linkify(escape(blanks[element.blank])) :
+              linkify(escape(element.blank)) ) +
             '</span>' ) }
         else if (predicate.reference(element)) {
           return (
