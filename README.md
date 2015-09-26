@@ -106,3 +106,10 @@ assert.equal(
     .join('') )
 ```
 
+Hyperlinks will be encoded automatically:
+
+```javascript
+assert.equal(
+  html({ content: [ 'This is a great website: http://example.com/' ] }),
+  '<div class="article"><p>Just a great website:<a href="http://example.com/">http://example.com/</a></p></div>')
+```
