@@ -1,21 +1,7 @@
 var escape = require('escape-html')
 var group = require('commonform-group-series')
 var predicate = require('commonform-predicate')
-var urlRegex = require('url-regex')
-
-function linkifyOne(text, link) {
-  return text.replace(link, "<a href=\"" + link + "\">" + link + "</a>")
-}
-
-function linkify(text) {
-  if (urlRegex().test(text)) {
-    var matches = text.match(urlRegex())
-    matches.forEach( function(link) { text = linkifyOne(text, link) } )
-    return text
-  } else {
-    return text
-  }
-}
+var linkify = require('html-linkify')
 
 function renderParagraph(paragraph, blanks, html5) {
   return  (
@@ -94,7 +80,7 @@ module.exports = function commonformHTML(form, blanks, options) {
   var html5 = ( 'html5' in options && options.html5 === true )
   var title = ( 'title' in options ?
     options.title : false )
-  return (
+  return ( linkify(
     ( html5 ?
       ( form.conspicuous ?
           '<article class="conspicuous">' :
@@ -104,4 +90,5 @@ module.exports = function commonformHTML(form, blanks, options) {
           '<div class="article">' ) ) +
     ( title ? ( '<h1>' + escape(title) + '</h1>' ) : '' ) +
     renderForm(( title ? 1 : 0 ), form, blanks, html5) +
-    ( html5 ? '</article>' : '</div>' ) ) }
+    ( html5 ? '</article>' : '</div>' ),
+    { escape: false } ) ) }
