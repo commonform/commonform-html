@@ -126,3 +126,11 @@ assert.equal(
   html({ content: [ 'This is a great website: http://example.com/' ] }),
   '<div class="article"><p>This is a great website: <a href="http://example.com/">http://example.com/</a></p></div>')
 ```
+
+Emails should also be linked:
+
+```javascript
+assert.equal(
+  html({ content: [ 'Email bob@example.com for more information.' ] }),
+  '<div class="article"><p>Email <a href="mailto:bob@example.com">bob@example.com</a> for more information.</a></p></div>')
+```
