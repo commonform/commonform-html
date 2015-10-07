@@ -1,6 +1,7 @@
 var escape = require('escape-html')
 var group = require('commonform-group-series')
 var predicate = require('commonform-predicate')
+var linkify = require('html-linkify')
 
 function renderParagraph(paragraph, blanks, html5) {
   return  (
@@ -8,7 +9,7 @@ function renderParagraph(paragraph, blanks, html5) {
     paragraph.content
       .map(function(element) {
         if (predicate.text(element)) {
-          return escape(element) }
+          return linkify(escape(element)) }
         else if (predicate.use(element)) {
           return (
             '<span class="term">' +
@@ -23,8 +24,8 @@ function renderParagraph(paragraph, blanks, html5) {
           return (
             '<span class="blank">' +
             ( element.blank in blanks ?
-              escape(blanks[element.blank]) :
-              escape(element.blank) ) +
+              linkify(escape(blanks[element.blank])) :
+              linkify(escape(element.blank)) ) +
             '</span>' ) }
         else if (predicate.reference(element)) {
           return (
@@ -79,7 +80,7 @@ module.exports = function commonformHTML(form, blanks, options) {
   var html5 = ( 'html5' in options && options.html5 === true )
   var title = ( 'title' in options ?
     options.title : false )
-  return (
+  return ( linkify(
     ( html5 ?
       ( form.conspicuous ?
           '<article class="conspicuous">' :
@@ -89,4 +90,5 @@ module.exports = function commonformHTML(form, blanks, options) {
           '<div class="article">' ) ) +
     ( title ? ( '<h1>' + escape(title) + '</h1>' ) : '' ) +
     renderForm(( title ? 1 : 0 ), form, blanks, html5) +
-    ( html5 ? '</article>' : '</div>' ) ) }
+    ( html5 ? '</article>' : '</div>' ),
+    { escape: false } ) ) }

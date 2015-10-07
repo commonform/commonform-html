@@ -106,3 +106,31 @@ assert.equal(
     .join('') )
 ```
 
+Hyperlinks will be encoded automatically:
+
+```javascript
+
+/*
+BUG: This doesn't work!
+
+var plaintext = 'This is a great website: http://example.com/'
+
+console.log(plaintext)
+ > This is a great website: http://example.com/
+
+console.log( html( { content: [ plaintext ] } ) )
+ > <div class="article"><p>This is a great website: <a href="<a href="http://example.com/">http://example.com/</a>"><a href="http://example.com/">http://example.com/</a></a></p></div>
+*/
+
+assert.equal(
+  html({ content: [ 'This is a great website: http://example.com/' ] }),
+  '<div class="article"><p>This is a great website: <a href="http://example.com/">http://example.com/</a></p></div>')
+```
+
+Emails should also be linked:
+
+```javascript
+assert.equal(
+  html({ content: [ 'Email bob@example.com for more information.' ] }),
+  '<div class="article"><p>Email <a href="mailto:bob@example.com">bob@example.com</a> for more information.</a></p></div>')
+```
