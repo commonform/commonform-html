@@ -1,6 +1,7 @@
 var escape = require('escape-html')
 var group = require('commonform-group-series')
 var predicate = require('commonform-predicate')
+var typogr = require('typogr')
 
 function renderParagraph(paragraph, blanks, html5) {
   return  (
@@ -79,7 +80,7 @@ module.exports = function commonformHTML(form, blanks, options) {
   var html5 = ( 'html5' in options && options.html5 === true )
   var title = ( 'title' in options ?
     options.title : false )
-  return (
+  return ( typogr.smartypants(
     ( html5 ?
       ( form.conspicuous ?
           '<article class="conspicuous">' :
@@ -89,4 +90,4 @@ module.exports = function commonformHTML(form, blanks, options) {
           '<div class="article">' ) ) +
     ( title ? ( '<h1>' + escape(title) + '</h1>' ) : '' ) +
     renderForm(( title ? 1 : 0 ), form, blanks, html5) +
-    ( html5 ? '</article>' : '</div>' ) ) }
+    ( html5 ? '</article>' : '</div>' ) ) ) }

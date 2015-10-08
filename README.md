@@ -106,3 +106,10 @@ assert.equal(
     .join('') )
 ```
 
+There is some smart automatic typography using `typogr.js`:
+
+```javascript
+assert.equal(
+  html({ content: [ '"Just a test\'s test with an apostrophe," he said.' ] }),
+  '<div class="article"><p>&quot;Just a test&#39;s test with an apostrophe,&quot; he said.</p></div>')
+```
