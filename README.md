@@ -37,8 +37,8 @@ You can also pass an `Object` map of fill-in-the-blank values:
 ```javascript
 assert.equal(
   html(
-    { content: [ { blank: 'name' } ] },
-    { name: 'Joe' }),
+    { content: [ { blank: '' } ] },
+    [ { blank: [ 'content', 0 ], value: 'Joe' } ]),
   '<div class="article"><p><span class="blank">Joe</span></p></div>')
 ```
 
@@ -46,7 +46,7 @@ A final argument of `{ html5: true }` specifies HTML5 output:
 
 ```javascript
 assert.equal(
-  html({ content: [ 'Just a test' ] }, { }, { html5: true }),
+  html({ content: [ 'Just a test' ] }, [ ], { html5: true }),
   '<article><p>Just a test</p></article>')
 
 assert.equal(
@@ -62,7 +62,7 @@ assert.equal(
         form: { content: [ 'This is B' ] } },
       'Last text references ',
       { reference: 'Elsewhere' }] },
-    { },
+    [ ],
     { html5: true }),
   [ '<article>', // not <div class="article">
       '<p>',
@@ -94,8 +94,8 @@ You can also set a title:
 ```javascript
 assert.equal(
   html(
-    { content: [ 'Hello, ', { blank: 'name' } ] },
-    { name: 'Joe' },
+    { content: [ 'Hello, ', { blank: '' } ] },
+    [ { blank: [ 'content', 1 ], value: 'Joe' } ],
     { title: 'Welcome' }),
   [ '<div class="article">',
       '<h1>Welcome</h1>',
@@ -105,4 +105,3 @@ assert.equal(
     '</div>' ]
     .join('') )
 ```
-

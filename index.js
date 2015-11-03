@@ -1,12 +1,13 @@
 var escape = require('escape-html')
+var equal = require('deep-equal')
 var group = require('commonform-group-series')
 var predicate = require('commonform-predicate')
 
-function renderParagraph(paragraph, blanks, html5) {
+function renderParagraph(paragraph, offset, path, blanks, html5) {
   return  (
     '<p>' +
     paragraph.content
-      .map(function(element) {
+      .map(function(element, index) {
         if (predicate.text(element)) {
           return escape(element) }
         else if (predicate.use(element)) {
@@ -20,11 +21,13 @@ function renderParagraph(paragraph, blanks, html5) {
             escape(element.definition) +
             ( html5 ? '</dfn>' : '</span>' ) ) }
         else if (predicate.blank(element)) {
+          var elementPath = path.concat('content', ( offset + index ))
+          var value = matchingValue(elementPath, blanks)
           return (
             '<span class="blank">' +
-            ( element.blank in blanks ?
-              escape(blanks[element.blank]) :
-              escape(element.blank) ) +
+            ( value ?
+              escape(value) :
+              escape('[•]') ) +
             '</span>' ) }
         else if (predicate.reference(element)) {
           return (
@@ -33,6 +36,13 @@ function renderParagraph(paragraph, blanks, html5) {
             '</span>' ) } })
         .join('') +
     '</p>' ) }
+
+function matchingValue(path, blanks) {
+  var length = blanks.length
+  for (var index = 0; index < length; index++) {
+    var blank = blanks[index]
+    if (equal(blank.blank, path)) {
+      return blank.value } } }
 
 function heading(depth, text) {
   if (depth <= 6) {
@@ -46,9 +56,9 @@ function heading(depth, text) {
       escape(text) +
       '</span>' ) } }
 
-function renderSeries(depth, series, blanks, html5) {
+function renderSeries(depth, offset, path, series, blanks, html5) {
   return series.content
-    .map(function(child) {
+    .map(function(child, index) {
       return (
         ( html5 ?
           ( child.form.conspicuous ?
@@ -58,22 +68,29 @@ function renderSeries(depth, series, blanks, html5) {
               '<div class="section conspicuous">' :
               '<div class="section">' ) ) +
         ( 'heading' in child ? heading(depth, child.heading) : '' ) +
-        renderForm(depth, child.form, blanks, html5) +
+        renderForm(
+          depth,
+          path.concat('content', ( offset + index )),
+          child.form,
+          blanks, html5) +
         ( html5 ? '</section>' : '</div>' ) ) })
       .join('') }
 
-function renderForm(depth, form, blanks, html5) {
+function renderForm(depth, path, form, blanks, html5) {
+  var offset = 0
   return group(form)
     .map(function(group) {
-      return (
+      var returned = (
         group.type === 'series' ?
-          renderSeries(( depth + 1 ), group, blanks, html5) :
-          renderParagraph(group, blanks, html5) ) })
+          renderSeries(( depth + 1 ), offset, path, group, blanks, html5) :
+          renderParagraph(group, offset, path, blanks, html5) )
+      offset += group.length
+      return returned })
     .join('') }
 
 module.exports = function commonformHTML(form, blanks, options) {
   if (!blanks) {
-    blanks = { } }
+    blanks = [ ] }
   if (!options) {
     options = { } }
   var html5 = ( 'html5' in options && options.html5 === true )
@@ -88,5 +105,5 @@ module.exports = function commonformHTML(form, blanks, options) {
           '<div class="article conspicuous">' :
           '<div class="article">' ) ) +
     ( title ? ( '<h1>' + escape(title) + '</h1>' ) : '' ) +
-    renderForm(( title ? 1 : 0 ), form, blanks, html5) +
+    renderForm(( title ? 1 : 0 ), [ ], form, blanks, html5) +
     ( html5 ? '</article>' : '</div>' ) ) }
