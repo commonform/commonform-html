@@ -32,14 +32,22 @@ assert.equal(
 
 ```
 
-You can also pass an `Object` map of fill-in-the-blank values:
+You can also pass an `Array` of fill-in-the-blank values:
 
 ```javascript
 assert.equal(
   html(
-    { content: [ { blank: '' } ] },
-    [ { blank: [ 'content', 0 ], value: 'Joe' } ]),
-  '<div class="article"><p><span class="blank">Joe</span></p></div>')
+    { content: [
+        { blank: '' },
+        { form: { content: [ 'Another ', { blank: '' } ] } } ] },
+    [ { blank: [ 'content', 0 ], value: 'Joe' },
+      { blank: [ 'content', 1, 'form', 'content', 1 ], value: 'Bob' } ]),
+  ( '<div class="article">' +
+      '<p><span class="blank">Joe</span></p>' +
+      '<div class="section">' +
+        '<p>Another <span class="blank">Bob</span></p>' +
+      '</div>' +
+    '</div>' ))
 ```
 
 A final argument of `{ html5: true }` specifies HTML5 output:

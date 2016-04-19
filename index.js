@@ -70,7 +70,7 @@ function renderSeries(depth, offset, path, series, blanks, html5) {
         ( 'heading' in child ? heading(depth, child.heading) : '' ) +
         renderForm(
           depth,
-          path.concat('content', ( offset + index )),
+          path.concat('content', ( offset + index ), 'form'),
           child.form,
           blanks, html5) +
         ( html5 ? '</section>' : '</div>' ) ) })
@@ -84,7 +84,7 @@ function renderForm(depth, path, form, blanks, html5) {
         group.type === 'series' ?
           renderSeries(( depth + 1 ), offset, path, group, blanks, html5) :
           renderParagraph(group, offset, path, blanks, html5) )
-      offset += group.length
+      offset += group.content.length
       return returned })
     .join('') }
 
