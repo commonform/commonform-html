@@ -1,5 +1,4 @@
 var escape = require('escape-html')
-var equal = require('deep-equal')
 var group = require('commonform-group-series')
 var predicate = require('commonform-predicate')
 
@@ -130,5 +129,16 @@ module.exports = function commonformHTML (form, blanks, options) {
     (title ? ('<h1>' + escape(title) + '</h1>') : '') +
     renderForm((title ? 1 : 0), [], form, blanks, html5) +
     (html5 ? '</article>' : '</div>')
+  )
+}
+
+function equal (a, b) {
+  return (
+    Array.isArray(a) &&
+    Array.isArray(b) &&
+    a.length === b.length &&
+    a.every(function (_, index) {
+      return a[index] === b[index]
+    })
   )
 }
