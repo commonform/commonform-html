@@ -8,8 +8,9 @@ Call the exported function with a Common Form, receive a string of HTML:
 var assert = require('assert')
 
 assert.equal(
-  html({ content: [ 'Just a test' ] }),
-  '<div class="article"><p>Just a test</p></div>')
+  html({content: ['Just a test']}),
+  '<div class="article"><p>Just a test</p></div>'
+)
 
 assert.equal(
   html({
@@ -134,13 +135,13 @@ assert.equal(
     {
       content: [
         {
-          heading: "First-Level Heading",
+          heading: 'First-Level Heading',
           form: {
             content: [
-              "Here comes a list.",
+              'Here comes a list.',
               {form: {content: ['Apple']}},
               {form: {content: ['Orange']}},
-              "And another one!",
+              'And another one!',
               {
                 form: {
                   content: [
@@ -153,13 +154,13 @@ assert.equal(
               {form: {content: ['Purple']}},
               {
                 form: {
-                  "content": [
+                  content: [
                     {form: {content: ['More']}},
                     {form: {content: ['Even More']}}
                   ]
                 }
               },
-              "Last text!"
+              'Last text!'
             ]
           }
         }
