@@ -68,38 +68,70 @@ function heading (depth, text) {
   }
 }
 
-function renderSeries (depth, offset, path, series, blanks, html5) {
-  return series.content
-  .map(function (child, index) {
+function renderSeries (
+  depth, offset, path, series, blanks, html5, lists
+) {
+  var simple = lists && !series.content.some(containsAHeading)
+  if (simple) {
     return (
-      (
-        html5
-        ? child.form.conspicuous
-          ? '<section class="conspicuous">'
-          : '<section>'
-        : child.form.conspicuous
-          ? '<div class="section conspicuous">'
-          : '<div class="section">'
-      ) +
-      ('heading' in child ? heading(depth, child.heading) : '') +
-      renderForm(
-        depth,
-        path.concat('content', offset + index, 'form'),
-        child.form,
-        blanks, html5
-      ) +
-      (html5 ? '</section>' : '</div>')
+      '<ol>' +
+      series.content
+        .map(function (child, index) {
+          return (
+            (
+              child.form.conspicuous
+                ? '<li class="conspicuous">'
+                : '<li>'
+            ) +
+            renderForm(
+              depth,
+              path.concat('content', offset + index, 'form'),
+              child.form,
+              blanks,
+              html5,
+              lists
+            ) +
+            '</li>'
+          )
+        })
+        .join('') +
+      '</ol>'
     )
-  })
-  .join('')
+  } else {
+    return series.content
+      .map(function (child, index) {
+        return (
+          (
+            html5
+            ? child.form.conspicuous
+              ? '<section class="conspicuous">'
+              : '<section>'
+            : child.form.conspicuous
+              ? '<div class="section conspicuous">'
+              : '<div class="section">'
+          ) +
+          ('heading' in child ? heading(depth, child.heading) : '') +
+          renderForm(
+            depth,
+            path.concat('content', offset + index, 'form'),
+            child.form,
+            blanks,
+            html5,
+            lists
+          ) +
+          (html5 ? '</section>' : '</div>')
+        )
+      })
+      .join('')
+  }
 }
 
-function renderForm (depth, path, form, blanks, html5) {
+function renderForm (depth, path, form, blanks, html5, lists) {
   var offset = 0
   return group(form)
   .map(function (group) {
     var returned = group.type === 'series'
-    ? renderSeries(depth + 1, offset, path, group, blanks, html5)
+    ? renderSeries(depth + 1, offset, path, group, blanks, html5, lists)
     : renderParagraph(group, offset, path, blanks, html5)
     offset += group.content.length
     return returned
@@ -115,6 +147,7 @@ module.exports = function commonformHTML (form, blanks, options) {
     options = {}
   }
   var html5 = 'html5' in options && options.html5 === true
+  var lists = 'lists' in options && options.lists === true
   var title = 'title' in options ? options.title : false
   return (
     (
@@ -127,7 +160,7 @@ module.exports = function commonformHTML (form, blanks, options) {
         : '<div class="article">'
     ) +
     (title ? ('<h1>' + escape(title) + '</h1>') : '') +
-    renderForm((title ? 1 : 0), [], form, blanks, html5) +
+    renderForm((title ? 1 : 0), [], form, blanks, html5, lists) +
     (html5 ? '</article>' : '</div>')
   )
 }
@@ -139,6 +172,18 @@ function equal (a, b) {
     a.length === b.length &&
     a.every(function (_, index) {
       return a[index] === b[index]
+    })
+  )
+}
+
+function containsAHeading (child) {
+  return (
+    child.hasOwnProperty('heading') ||
+    child.form.content.some(function (element) {
+      return (
+        element.hasOwnProperty('form') &&
+        containsAHeading(element)
+      )
     })
   )
 }

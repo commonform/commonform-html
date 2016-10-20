@@ -126,6 +126,82 @@ assert.equal(
 )
 ```
 
+The option `{ lists: true }` renders any series of forms without headings as an ordered list:
+
+```javascript
+assert.equal(
+  html(
+    {
+      content: [
+        {
+          heading: "First-Level Heading",
+          form: {
+            content: [
+              "Here comes a list.",
+              {form: {content: ['Apple']}},
+              {form: {content: ['Orange']}},
+              "And another one!",
+              {
+                form: {
+                  content: [
+                    'Red',
+                    {form: {content: ['Red-Orange']}},
+                    {form: {content: ['Red-Yellow']}}
+                  ]
+                }
+              },
+              {form: {content: ['Purple']}},
+              {
+                form: {
+                  "content": [
+                    {form: {content: ['More']}},
+                    {form: {content: ['Even More']}}
+                  ]
+                }
+              },
+              "Last text!"
+            ]
+          }
+        }
+      ]
+    },
+    [],
+    {html5: true, lists: true}
+  ),
+  [
+    '<article>',
+      '<section>',
+        '<h1>First-Level Heading</h1>',
+        '<p>Here comes a list.</p>',
+        '<ol>',
+          '<li><p>Apple</p></li>',
+          '<li><p>Orange</p></li>',
+        '</ol>',
+        '<p>And another one!</p>',
+        '<ol>',
+          '<li>',
+            '<p>Red</p>',
+            '<ol>',
+              '<li><p>Red-Orange</p></li>',
+              '<li><p>Red-Yellow</p></li>',
+            '</ol>',
+          '</li>',
+          '<li><p>Purple</p></li>',
+          '<li>',
+            '<ol>',
+              '<li><p>More</p></li>',
+              '<li><p>Even More</p></li>',
+            '</ol>',
+          '</li>',
+        '</ol>',
+        '<p>Last text!</p>',
+      '</section>',
+    '</article>'
+  ]
+    .join('')
+)
+```
+
 You can also set a title:
 
 ```javascript
