@@ -203,7 +203,7 @@ assert.equal(
 )
 ```
 
-You can also set a title:
+You can also set a title, edition, or both:
 
 ```javascript
 assert.equal(
@@ -215,6 +215,49 @@ assert.equal(
   [
     '<div class="article">',
       '<h1>Welcome</h1>',
+      '<p>',
+        'Hello, <span class="blank">Joe</span>',
+      '</p>',
+    '</div>'
+  ]
+  .join('')
+)
+
+assert.equal(
+  html(
+    {content: ['Hello, ', {blank: ''}]},
+    [{blank: ['content', 1], value: 'Joe'}],
+    {title: 'Welcome', edition: '1e'}
+  ),
+  [
+    '<div class="article">',
+      '<h1>Welcome<br>1e</h1>',
+      '<p>',
+        'Hello, <span class="blank">Joe</span>',
+      '</p>',
+    '</div>'
+  ]
+  .join('')
+)
+```
+
+Set `options.hash` to print the form hash at the top:
+
+```javascript
+assert.equal(
+  html(
+    {content: ['Hello, ', {blank: ''}]},
+    [{blank: ['content', 1], value: 'Joe'}],
+    {title: 'Welcome', edition: '1e', hash: true}
+  ),
+  [
+    '<div class="article">',
+      '<h1>Welcome<br>1e</h1>',
+      '<p class=hash><code>' +
+      '[•] ' +
+      'd36c54da27de611b3a9ce7d08638bbd2' +
+      '00cf5f3bb41d59320d04bba02ca48f85' +
+      '</code></p>',
       '<p>',
         'Hello, <span class="blank">Joe</span>',
       '</p>',

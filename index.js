@@ -1,5 +1,6 @@
 var escape = require('escape-html')
 var group = require('commonform-group-series')
+var hash = require('commonform-hash')
 var predicate = require('commonform-predicate')
 
 function renderParagraph (paragraph, offset, path, blanks, html5) {
@@ -147,6 +148,7 @@ module.exports = function commonformHTML (form, blanks, options) {
   var html5 = 'html5' in options && options.html5 === true
   var lists = 'lists' in options && options.lists === true
   var title = 'title' in options ? options.title : false
+  var edition = 'edition' in options ? options.edition : false
   return (
     (
       html5
@@ -157,7 +159,20 @@ module.exports = function commonformHTML (form, blanks, options) {
         ? '<div class="article conspicuous">'
         : '<div class="article">'
     ) +
-    (title ? ('<h1>' + escape(title) + '</h1>') : '') +
+    (
+      title
+        ? (
+          '<h1>' + escape(title) +
+          (edition ? ('<br>' + escape(edition)) : '') +
+          '</h1>'
+        )
+        : ''
+      ) +
+      (
+        options.hash
+          ? ('<p class=hash><code>[•] ' + hash(form) + '</code></p>')
+          : ''
+      ) +
       renderForm((title ? 1 : 0), [], form, blanks, html5, lists) +
     (html5 ? '</article>' : '</div>')
   )
