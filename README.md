@@ -253,7 +253,7 @@ assert.equal(
   [
     '<div class="article">',
       '<h1>Welcome<br>1e</h1>',
-      '<p class=hash><code>' +
+      '<p class="hash"><code>' +
       'd36c54da27de611b3a9ce7d08638bbd2' +
       '00cf5f3bb41d59320d04bba02ca48f85' +
       '</code></p>',

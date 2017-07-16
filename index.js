@@ -170,7 +170,7 @@ module.exports = function commonformHTML (form, blanks, options) {
       ) +
       (
         options.hash
-          ? ('<p class=hash><code>' + hash(form) + '</code></p>')
+          ? ('<p class="hash"><code>' + hash(form) + '</code></p>')
           : ''
       ) +
       renderForm((title ? 1 : 0), [], form, blanks, html5, lists) +
