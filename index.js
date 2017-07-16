@@ -159,21 +159,14 @@ module.exports = function commonformHTML (form, blanks, options) {
         ? '<div class="article conspicuous">'
         : '<div class="article">'
     ) +
+    (title ? ('<h1>' + escape(title) + '</h1>') : '') +
+    (edition ? ('<p class="edition">' + escape(edition) + '</p>') : '') +
     (
-      title
-        ? (
-          '<h1>' + escape(title) +
-          (edition ? ('<br>' + escape(edition)) : '') +
-          '</h1>'
-        )
+      options.hash
+        ? ('<p class="hash"><code>' + hash(form) + '</code></p>')
         : ''
-      ) +
-      (
-        options.hash
-          ? ('<p class="hash"><code>' + hash(form) + '</code></p>')
-          : ''
-      ) +
-      renderForm((title ? 1 : 0), [], form, blanks, html5, lists) +
+    ) +
+    renderForm((title ? 1 : 0), [], form, blanks, html5, lists) +
     (html5 ? '</article>' : '</div>')
   )
 }
