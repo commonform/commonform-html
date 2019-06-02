@@ -5,7 +5,7 @@
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
   "dependencies": {
     "commonform-group-series": "^2.0.0",
-    "commonform-hash": "^0.4.3",
+    "commonform-hash": "^1.0.0",
     "commonform-predicate": "^1.0.0",
     "escape-html": "^1.0.2"
   },
