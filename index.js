@@ -104,12 +104,12 @@ function renderSeries (
         return (
           (
             html5
-            ? child.form.conspicuous
-              ? '<section class="conspicuous">'
-              : '<section>'
-            : child.form.conspicuous
-              ? '<div class="section conspicuous">'
-              : '<div class="section">'
+              ? child.form.conspicuous
+                ? '<section class="conspicuous">'
+                : '<section>'
+              : child.form.conspicuous
+                ? '<div class="section conspicuous">'
+                : '<div class="section">'
           ) +
           ('heading' in child ? heading(depth, child.heading) : '') +
             renderForm(
@@ -152,12 +152,12 @@ module.exports = function commonformHTML (form, blanks, options) {
   return (
     (
       html5
-      ? form.conspicuous
-        ? '<article class="conspicuous">'
-        : '<article>'
-      : form.conspicuous
-        ? '<div class="article conspicuous">'
-        : '<div class="article">'
+        ? form.conspicuous
+          ? '<article class="conspicuous">'
+          : '<article>'
+        : form.conspicuous
+          ? '<div class="article conspicuous">'
+          : '<div class="article">'
     ) +
     (title ? ('<h1>' + escape(title) + '</h1>') : '') +
     (edition ? ('<p class="edition">' + escape(edition) + '</p>') : '') +
