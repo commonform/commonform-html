@@ -1,3 +1,7 @@
+# commonform-html
+
+render [Common Forms](https://www.npmjs.com/package/commonform-validate) in HTML
+
 ```javascript
 var html = require('commonform-html')
 ```
