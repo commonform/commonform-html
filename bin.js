@@ -38,20 +38,16 @@ function bin (stdin, stdout, stderr, argv, done) {
     .option('values', {
       alias: 'v',
       describe: 'JSON file with blank values',
-      normalize: true,
+      coerce: readJSON,
       demandOption: false
     })
     .option('directions', {
       alias: 'd',
       describe: 'JSON file with directions',
-      normalize: true,
+      coerce: readJSON,
       demandOption: false
     })
     .implies('directions', 'values')
-    .coerce({
-      values: readJSON,
-      directions: readJSON
-    })
     .version()
     .help()
     .alias('h', 'help')
@@ -120,5 +116,9 @@ function bin (stdin, stdout, stderr, argv, done) {
 }
 
 function readJSON (file) {
-  return JSON.parse(require('fs').readFileSync(file))
+  return JSON.parse(
+    require('fs').readFileSync(
+      require('path').normalize(file)
+    )
+  )
 }
