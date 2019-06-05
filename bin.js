@@ -54,26 +54,9 @@ function bin (stdin, stdout, stderr, argv, done) {
     .parse(argv)
 
   // Prepare fill-in-the-blank values.
-  var directions = args.directions
-  var values = args.values
-  if (directions && !Array.isArray(directions)) {
-    stderr.write('Directions must be an array.\n')
-    return done(1)
-  }
-  var blanks = []
-  if (values) {
-    if (Array.isArray(values)) {
-      blanks = values
-    } else {
-      Object.keys(values).forEach(function (label) {
-        var value = values[label]
-        directions.forEach(function (direction) {
-          if (direction.label !== label) return
-          blanks.push({ value: value, blank: direction.blank })
-        })
-      })
-    }
-  }
+  var blanks = require('commonform-prepare-blanks')(
+    args.values, args.directions
+  )
 
   // Prepare rendering options.
   var options = {}
