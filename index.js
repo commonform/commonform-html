@@ -1,5 +1,6 @@
 var escape = require('escape-html')
 var group = require('commonform-group-series')
+var has = require('has')
 var hash = require('commonform-hash')
 var predicate = require('commonform-predicate')
 
@@ -184,10 +185,10 @@ function equal (a, b) {
 
 function containsAHeading (child) {
   return (
-    child.hasOwnProperty('heading') ||
+    has(child, 'heading') ||
     child.form.content.some(function (element) {
       return (
-        element.hasOwnProperty('form') &&
+        has(element, 'form') &&
         containsAHeading(element)
       )
     })
