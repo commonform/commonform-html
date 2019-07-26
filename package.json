@@ -9,14 +9,14 @@
     "commonform-predicate": "^3.0.1",
     "commonform-prepare-blanks": "^1.0.1",
     "escape-html": "^1.0.2",
-    "has": "^1.0.3"
+    "has": "^1.0.3",
+    "yargs": "^13.2.4"
   },
   "devDependencies": {
     "defence-cli": "^3.0.1",
     "replace-require-self": "^1.0.0",
     "standard": "^13.0.2",
-    "standard-markdown": "^5.0.1",
-    "yargs": "^13.2.4"
+    "standard-markdown": "^5.0.1"
   },
   "bin": "./bin.js",
   "files": [
