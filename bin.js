@@ -54,9 +54,11 @@ function bin (stdin, stdout, stderr, argv, done) {
     .parse(argv)
 
   // Prepare fill-in-the-blank values.
-  var blanks = require('commonform-prepare-blanks')(
-    args.values, args.directions
-  )
+  var blanks = (args.value && args.directions)
+    ? require('commonform-prepare-blanks')(
+      args.values, args.directions
+    )
+    : []
 
   // Prepare rendering options.
   var options = {}
