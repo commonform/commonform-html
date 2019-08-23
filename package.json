@@ -10,7 +10,7 @@
     "commonform-prepare-blanks": "^1.0.1",
     "escape-html": "^1.0.2",
     "has": "^1.0.3",
-    "yargs": "^13.2.4"
+    "yargs": "^14.0.0"
   },
   "devDependencies": {
     "defence-cli": "^3.0.1",
