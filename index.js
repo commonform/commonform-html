@@ -4,7 +4,8 @@ var has = require('has')
 var hash = require('commonform-hash')
 var predicate = require('commonform-predicate')
 
-function renderParagraph (paragraph, offset, path, blanks, html5) {
+function renderParagraph (paragraph, offset, path, blanks, options) {
+  var html5 = options.html5
   return (
     '<p>' +
     paragraph.content
@@ -70,10 +71,9 @@ function heading (depth, text) {
   }
 }
 
-function renderSeries (
-  depth, offset, path, series, blanks, html5, lists
-) {
-  var simple = lists && !series.content.some(containsAHeading)
+function renderSeries (depth, offset, path, series, blanks, options) {
+  var simple = options.lists && !series.content.some(containsAHeading)
+  var html5 = options.html5
   if (simple) {
     return (
       '<ol>' +
@@ -90,8 +90,7 @@ function renderSeries (
                 path.concat('content', offset + index, 'form'),
                 child.form,
                 blanks,
-                html5,
-                lists
+                options
               ) +
             '</li>'
           )
@@ -118,8 +117,7 @@ function renderSeries (
               path.concat('content', offset + index, 'form'),
               child.form,
               blanks,
-              html5,
-              lists
+              options
             ) +
           (html5 ? '</section>' : '</div>')
         )
@@ -128,15 +126,15 @@ function renderSeries (
   }
 }
 
-function renderForm (depth, path, form, blanks, html5, lists) {
+function renderForm (depth, path, form, blanks, options) {
   var offset = 0
   return group(form)
     .map(function (group) {
       var returned = group.type === 'series'
         ? renderSeries(
-          depth + 1, offset, path, group, blanks, html5, lists
+          depth + 1, offset, path, group, blanks, options
         )
-        : renderParagraph(group, offset, path, blanks, html5)
+        : renderParagraph(group, offset, path, blanks, options)
       offset += group.content.length
       return returned
     })
@@ -146,10 +144,9 @@ function renderForm (depth, path, form, blanks, html5, lists) {
 module.exports = function commonformHTML (form, blanks, options) {
   blanks = blanks || []
   options = options || {}
-  var html5 = 'html5' in options && options.html5 === true
-  var lists = 'lists' in options && options.lists === true
-  var title = 'title' in options ? options.title : false
-  var edition = 'edition' in options ? options.edition : false
+  var html5 = options.html5
+  var title = options.title
+  var edition = options.edition
   return (
     (
       html5
@@ -167,7 +164,7 @@ module.exports = function commonformHTML (form, blanks, options) {
         ? ('<p class="hash"><code>' + hash(form) + '</code></p>')
         : ''
     ) +
-    renderForm((title ? 1 : 0), [], form, blanks, html5, lists) +
+    renderForm((title ? 1 : 0), [], form, blanks, options) +
     (html5 ? '</article>' : '</div>')
   )
 }
