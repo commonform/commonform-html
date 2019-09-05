@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "defence-cli": "^3.0.1",
+    "licensee": "^7.0.3",
     "replace-require-self": "^1.0.0",
     "standard": "^14.0.2",
     "standard-markdown": "^5.0.1"
@@ -27,6 +28,7 @@
   "license": "BlueOak-1.0.0",
   "repository": "commonform/commonform-html",
   "scripts": {
+    "licenses": "licensee --errors-only",
     "lint": "standard && standard-markdown",
     "test": "defence README.md | replace-require-self | node"
   }
