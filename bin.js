@@ -25,6 +25,11 @@ function bin (stdin, stdout, stderr, argv, done) {
       describe: 'output lists',
       type: 'boolean'
     })
+    .option('ids', {
+      alias: 'i',
+      describe: 'output headings with IDs',
+      type: 'boolean'
+    })
     .option('title', {
       alias: 't',
       describe: 'form title',
@@ -66,6 +71,7 @@ function bin (stdin, stdout, stderr, argv, done) {
   if (args.title) options.title = args.title
   if (args.html5) options.html5 = true
   if (args.lists) options.lists = true
+  if (args.ids) options.ids = true
 
   // Read the form to be rendered.
   var chunks = []

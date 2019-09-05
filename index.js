@@ -1,3 +1,4 @@
+var GitHubSlugger = require('github-slugger')
 var escape = require('escape-html')
 var group = require('commonform-group-series')
 var has = require('has')
@@ -33,11 +34,22 @@ function renderParagraph (paragraph, offset, path, blanks, options) {
             '</span>'
           )
         } else if (predicate.reference(element)) {
-          return (
-            '<span class="reference">' +
-              escape(element.reference) +
-            '</span>'
-          )
+          var heading = element.reference
+          if (options.ids) {
+            options.referenceSlugger.reset()
+            var slug = options.referenceSlugger.slug(heading)
+            return (
+              '<a href="#' + slug + '">' +
+                escape(heading) +
+              '</a>'
+            )
+          } else {
+            return (
+              '<span class="reference">' +
+                escape(heading) +
+              '</span>'
+            )
+          }
         }
       })
       .join('') +
@@ -55,16 +67,21 @@ function matchingValue (path, blanks) {
   }
 }
 
-function heading (depth, text) {
+function heading (depth, text, options) {
+  var id = options.ids
+    ? ' id="' + encodeURIComponent(
+      options.headingSlugger.slug(text)
+    ) + '"'
+    : ''
   if (depth <= 6) {
     return (
-      '<h' + depth + '>' +
+      '<h' + depth + id + '>' +
         escape(text) +
       '</h' + depth + '>'
     )
   } else {
     return (
-      '<span class="h' + depth + '">' +
+      '<span class="h' + depth + '"' + id + '>' +
         escape(text) +
       '</span>'
     )
@@ -111,7 +128,7 @@ function renderSeries (depth, offset, path, series, blanks, options) {
                 ? '<div class="section conspicuous">'
                 : '<div class="section">'
           ) +
-          ('heading' in child ? heading(depth, child.heading) : '') +
+          ('heading' in child ? heading(depth, child.heading, options) : '') +
             renderForm(
               depth,
               path.concat('content', offset + index, 'form'),
@@ -147,6 +164,10 @@ module.exports = function commonformHTML (form, blanks, options) {
   var html5 = options.html5
   var title = options.title
   var edition = options.edition
+  if (options.ids) {
+    options.headingSlugger = new GitHubSlugger()
+    options.referenceSlugger = new GitHubSlugger()
+  }
   return (
     (
       html5

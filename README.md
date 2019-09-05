@@ -207,6 +207,51 @@ assert.deepStrictEqual(
 )
 ```
 
+The option `{ ids: true }` renders headings and references with IDs:
+
+```javascript
+assert.deepStrictEqual(
+  html(
+    {
+      content: [
+        {
+          heading: 'First Heading',
+          form: {
+            content: [
+              'first heading content'
+            ]
+          }
+        },
+        {
+          heading: 'Second Heading',
+          form: {
+            content: [
+              'reference to ',
+              { reference: 'First Heading' }
+            ]
+          }
+        }
+      ]
+    },
+    [],
+    { html5: true, ids: true }
+  ),
+  [
+    '<article>',
+    '<section>',
+    '<h1 id="first-heading">First Heading</h1>',
+    '<p>first heading content</p>',
+    '</section>',
+    '<section>',
+    '<h1 id="second-heading">Second Heading</h1>',
+    '<p>reference to <a href="#first-heading">First Heading</a></p>',
+    '</section>',
+    '</article>'
+  ]
+    .join('')
+)
+```
+
 You can also set a title, edition, or both:
 
 ```javascript
