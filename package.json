@@ -1,7 +1,7 @@
 {
   "name": "commonform-html",
   "description": "render Common Forms in HTML",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
   "dependencies": {
     "commonform-group-series": "^2.0.0",
