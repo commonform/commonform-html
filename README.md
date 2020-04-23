@@ -317,14 +317,14 @@ assert.deepStrictEqual(
 )
 ```
 
-The option `{ className: "test" }` adds a custom class name to the root element.
+The option `{ classNames: ["test"] }` adds custom class names to the root element.
 
 ```javascript
 assert.deepStrictEqual(
   html(
     { content: ['Hello, Joe.'] },
     [],
-    { className: 'test' }
+    { classNames: ['test'] }
   ),
   [
     '<div class="article test">',
@@ -340,7 +340,7 @@ assert.deepStrictEqual(
   html(
     { content: ['Hello, Joe.'] },
     [],
-    { html5: true, className: 'test' }
+    { html5: true, classNames: ['test'] }
   ),
   [
     '<article class="test">',

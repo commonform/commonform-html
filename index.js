@@ -164,15 +164,14 @@ module.exports = function commonformHTML (form, blanks, options) {
   var html5 = options.html5
   var title = options.title
   var edition = options.edition
-  var className = options.className || ''
+  var classNames = options.classNames || []
   if (options.ids) {
     options.headingSlugger = new GitHubSlugger()
     options.referenceSlugger = new GitHubSlugger()
   }
-  var classNames = []
   if (!html5) classNames.push('article')
   if (form.conspicuous) classNames.push('conspicuous')
-  if (className) classNames.push(className)
+  classNames.sort()
   return (
     (
       html5
