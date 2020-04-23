@@ -352,3 +352,39 @@ assert.deepStrictEqual(
     .join('')
 )
 ```
+
+The option `{ depth: n }` demotes all headings by `n` levels.  For example, `{ depth: 1 }` demotes `<h1>`s to `<h2>`s, and so on.
+
+```javascript
+assert.deepStrictEqual(
+  html(
+    {
+      content: [
+        {
+          heading: 'A',
+          form: { content: ['This is A'] }
+        },
+        {
+          heading: 'B',
+          form: { content: ['This is B'] }
+        }
+      ]
+    },
+    [],
+    { depth: 2 }
+  ),
+  [
+    '<div class="article">',
+    '<div class="section">',
+    '<h3>A</h3>',
+    '<p>This is A</p>',
+    '</div>',
+    '<div class="section">',
+    '<h3>B</h3>',
+    '<p>This is B</p>',
+    '</div>',
+    '</div>'
+  ]
+    .join('')
+)
+```

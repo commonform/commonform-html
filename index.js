@@ -164,6 +164,7 @@ module.exports = function commonformHTML (form, blanks, options) {
   var html5 = options.html5
   var title = options.title
   var edition = options.edition
+  var depth = options.depth || 0
   var classNames = options.classNames || []
   if (options.ids) {
     options.headingSlugger = new GitHubSlugger()
@@ -172,6 +173,7 @@ module.exports = function commonformHTML (form, blanks, options) {
   if (!html5) classNames.push('article')
   if (form.conspicuous) classNames.push('conspicuous')
   classNames.sort()
+  if (title) depth++
   return (
     (
       html5
@@ -187,7 +189,7 @@ module.exports = function commonformHTML (form, blanks, options) {
         ? ('<p class="hash"><code>' + hash(form) + '</code></p>')
         : ''
     ) +
-    renderForm((title ? 1 : 0), [], form, blanks, options) +
+    renderForm(depth, [], form, blanks, options) +
     (html5 ? '</article>' : '</div>')
   )
 }
