@@ -164,19 +164,22 @@ module.exports = function commonformHTML (form, blanks, options) {
   var html5 = options.html5
   var title = options.title
   var edition = options.edition
+  var className = options.className || ''
   if (options.ids) {
     options.headingSlugger = new GitHubSlugger()
     options.referenceSlugger = new GitHubSlugger()
   }
+  var classNames = []
+  if (!html5) classNames.push('article')
+  if (form.conspicuous) classNames.push('conspicuous')
+  if (className) classNames.push(className)
   return (
     (
       html5
-        ? form.conspicuous
-          ? '<article class="conspicuous">'
-          : '<article>'
-        : form.conspicuous
-          ? '<div class="article conspicuous">'
-          : '<div class="article">'
+        ? classNames.length === 0
+          ? '<article>'
+          : '<article class="' + classNames.join(' ') + '">'
+        : '<div class="' + classNames.join(' ') + '">'
     ) +
     (title ? ('<h1>' + escape(title) + '</h1>') : '') +
     (edition ? ('<p class="edition">' + escape(edition) + '</p>') : '') +

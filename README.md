@@ -316,3 +316,39 @@ assert.deepStrictEqual(
     .join('')
 )
 ```
+
+The option `{ className: "test" }` adds a custom class name to the root element.
+
+```javascript
+assert.deepStrictEqual(
+  html(
+    { content: ['Hello, Joe.'] },
+    [],
+    { className: 'test' }
+  ),
+  [
+    '<div class="article test">',
+    '<p>',
+    'Hello, Joe.',
+    '</p>',
+    '</div>'
+  ]
+    .join('')
+)
+
+assert.deepStrictEqual(
+  html(
+    { content: ['Hello, Joe.'] },
+    [],
+    { html5: true, className: 'test' }
+  ),
+  [
+    '<article class="test">',
+    '<p>',
+    'Hello, Joe.',
+    '</p>',
+    '</article>'
+  ]
+    .join('')
+)
+```
