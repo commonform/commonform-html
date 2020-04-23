@@ -545,3 +545,27 @@ assert.deepStrictEqual(
     .join('')
 )
 ```
+
+Annotations to the root of the form appear just within the root element:
+
+```javascript
+var lint = require('commonform-lint')
+var form = { content: ['See ', { reference: 'Nonexistent' }] }
+var annotations = lint(form)
+assert.deepStrictEqual(
+  html(form, [], {
+    html5: true,
+    lists: true,
+    annotations: annotations,
+  }),
+  [
+    '<article>',
+    '<aside class="annotation error">',
+    '<p>The heading &quot;Nonexistent&quot; is referenced, but not used.</p>',
+    '</aside>',
+    '<p>See <span class="reference">Nonexistent</span></p>',
+    '</article>'
+  ]
+    .join('')
+)
+```

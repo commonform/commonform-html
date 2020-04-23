@@ -212,6 +212,7 @@ module.exports = function commonformHTML (form, blanks, options) {
         ? ('<p class="hash"><code>' + hash(form) + '</code></p>')
         : ''
     ) +
+    renderAnnotations([], options.annotations, options) +
     renderForm(depth, [], form, blanks, options) +
     (html5 ? '</article>' : '</div>')
   )
