@@ -96,15 +96,17 @@ function renderSeries (depth, offset, path, series, blanks, options) {
       '<ol>' +
       series.content
         .map(function (child, index) {
+          var childPath = path.concat('content', offset + index, 'form')
           return (
             (
               child.form.conspicuous
                 ? '<li class="conspicuous">'
                 : '<li>'
             ) +
+              renderAnnotations(childPath, options.annotations, options) +
               renderForm(
                 depth,
-                path.concat('content', offset + index, 'form'),
+                childPath,
                 child.form,
                 blanks,
                 options
@@ -118,6 +120,7 @@ function renderSeries (depth, offset, path, series, blanks, options) {
   } else {
     return series.content
       .map(function (child, index) {
+        var childPath = path.concat('content', offset + index, 'form')
         return (
           (
             html5
@@ -128,10 +131,11 @@ function renderSeries (depth, offset, path, series, blanks, options) {
                 ? '<div class="section conspicuous">'
                 : '<div class="section">'
           ) +
-          ('heading' in child ? heading(depth, child.heading, options) : '') +
+            ('heading' in child ? heading(depth, child.heading, options) : '') +
+            renderAnnotations(childPath, options.annotations, options) +
             renderForm(
               depth,
-              path.concat('content', offset + index, 'form'),
+              childPath,
               child.form,
               blanks,
               options
@@ -158,6 +162,24 @@ function renderForm (depth, path, form, blanks, options) {
     .join('')
 }
 
+function renderAnnotations (path, annotations, options) {
+  var tag = options.html5 ? 'aside' : 'div'
+  return annotations
+    .filter(function (annotation) {
+      return equal(annotation.path.slice(0, -2), path)
+    })
+    .map(function (annotation) {
+      var classNames = ['annotation', annotation.level]
+      var paragraph = '<p>' + escape(annotation.message) + '</p>'
+      return [
+        '<' + tag + ' class="' + classNames.sort().join(' ') + '">',
+        paragraph,
+        '</' + tag + '>'
+      ].join('')
+    })
+    .join('')
+}
+
 module.exports = function commonformHTML (form, blanks, options) {
   blanks = blanks || []
   options = options || {}
@@ -166,6 +188,7 @@ module.exports = function commonformHTML (form, blanks, options) {
   var edition = options.edition
   var depth = options.depth || 0
   var classNames = options.classNames || []
+  options.annotations = options.annotations || []
   if (options.ids) {
     options.headingSlugger = new GitHubSlugger()
     options.referenceSlugger = new GitHubSlugger()

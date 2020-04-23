@@ -388,3 +388,160 @@ assert.deepStrictEqual(
     .join('')
 )
 ```
+
+The option `{ annotations: [] }` renders annotations in context.
+
+```javascript
+assert.deepStrictEqual(
+  html(
+    {
+      content: [
+        {
+          heading: 'A',
+          form: { content: ['This is A'] }
+        },
+        {
+          heading: 'B',
+          form: { content: ['This is B'] }
+        },
+        {
+          heading: 'C',
+          form: {
+            content: [
+              { form: { content: ['1'] } },
+              { form: { content: ['2'] } },
+              { form: { content: ['3'] } }
+            ]
+          }
+        }
+      ]
+    },
+    [],
+    {
+      lists: true,
+      annotations: [
+        {
+          path: ['content', 0, 'form', 'content', 0],
+          level: 'info',
+          message: 'Annotation to A.'
+        },
+        {
+          path: ['content', 1, 'form', 'content', 0],
+          level: 'error',
+          message: 'Annotation to B.'
+        },
+        {
+          path: ['content', 2, 'form', 'content', 1, 'form', 'content', 0],
+          level: 'error',
+          message: 'Annotation to 2.'
+        }
+      ]
+    }
+  ),
+  [
+    '<div class="article">',
+    '<div class="section">',
+    '<h1>A</h1>',
+    '<div class="annotation info"><p>Annotation to A.</p></div>',
+    '<p>This is A</p>',
+    '</div>',
+    '<div class="section">',
+    '<h1>B</h1>',
+    '<div class="annotation error"><p>Annotation to B.</p></div>',
+    '<p>This is B</p>',
+    '</div>',
+    '<div class="section">',
+    '<h1>C</h1>',
+    '<ol>',
+    '<li><p>1</p></li>',
+    '<li>',
+    '<div class="annotation error"><p>Annotation to 2.</p></div>',
+    '<p>2</p>',
+    '</li>',
+    '<li><p>3</p></li>',
+    '</ol>',
+    '</div>',
+    '</div>'
+  ]
+    .join('')
+)
+```
+
+With `{ html5: true }`, annotations render as `<aside>`s.
+
+```javascript
+assert.deepStrictEqual(
+  html(
+    {
+      content: [
+        {
+          heading: 'A',
+          form: { content: ['This is A'] }
+        },
+        {
+          heading: 'B',
+          form: { content: ['This is B'] }
+        },
+        {
+          heading: 'C',
+          form: {
+            content: [
+              { form: { content: ['1'] } },
+              { form: { content: ['2'] } },
+              { form: { content: ['3'] } }
+            ]
+          }
+        }
+      ]
+    },
+    [],
+    {
+      html5: true,
+      lists: true,
+      annotations: [
+        {
+          path: ['content', 0, 'form', 'content', 0],
+          level: 'info',
+          message: 'Annotation to A.'
+        },
+        {
+          path: ['content', 1, 'form', 'content', 0],
+          level: 'error',
+          message: 'Annotation to B.'
+        },
+        {
+          path: ['content', 2, 'form', 'content', 1, 'form', 'content', 0],
+          level: 'error',
+          message: 'Annotation to 2.'
+        }
+      ]
+    }
+  ),
+  [
+    '<article>',
+    '<section>',
+    '<h1>A</h1>',
+    '<aside class="annotation info"><p>Annotation to A.</p></aside>',
+    '<p>This is A</p>',
+    '</section>',
+    '<section>',
+    '<h1>B</h1>',
+    '<aside class="annotation error"><p>Annotation to B.</p></aside>',
+    '<p>This is B</p>',
+    '</section>',
+    '<section>',
+    '<h1>C</h1>',
+    '<ol>',
+    '<li><p>1</p></li>',
+    '<li>',
+    '<aside class="annotation error"><p>Annotation to 2.</p></aside>',
+    '<p>2</p>',
+    '</li>',
+    '<li><p>3</p></li>',
+    '</ol>',
+    '</section>',
+    '</article>'
+  ]
+    .join('')
+)
+```
