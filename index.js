@@ -39,6 +39,7 @@ function renderParagraph (paragraph, offset, path, blanks, options) {
             options.referenceSlugger.reset()
             var slug = options.referenceSlugger.slug(heading)
             return (
+              // TODO: Add class="reference"
               '<a href="#' + slug + '">' +
                 escape(heading) +
               '</a>'
@@ -97,20 +98,40 @@ function renderSeries (depth, offset, path, series, blanks, options) {
       series.content
         .map(function (child, index) {
           var childPath = path.concat('content', offset + index, 'form')
+          var classes = []
+          var component = isComponent(child)
+          if (component) classes.push('component')
+          if (!component && child.form.conspicuous) {
+            classes.push('conspicuous')
+          }
           return (
             (
-              child.form.conspicuous
-                ? '<li class="conspicuous">'
+              classes.length > 0
+                ? '<li class="' + classes.join(' ') + '">'
                 : '<li>'
             ) +
-              renderAnnotations(childPath, options.annotations, options) +
-              renderForm(
-                depth,
-                childPath,
-                child.form,
-                blanks,
-                options
-              ) +
+            (
+              isComponent(child)
+                ? (
+                  renderComponent(
+                    depth,
+                    childPath,
+                    child,
+                    blanks,
+                    options
+                  )
+                )
+                : (
+                  renderAnnotations(childPath, options.annotations, options) +
+                  renderForm(
+                    depth,
+                    childPath,
+                    child.form,
+                    blanks,
+                    options
+                  )
+                )
+            ) +
             '</li>'
           )
         })
@@ -121,24 +142,43 @@ function renderSeries (depth, offset, path, series, blanks, options) {
     return series.content
       .map(function (child, index) {
         var childPath = path.concat('content', offset + index, 'form')
+        var classes = []
+        var component = isComponent(child)
+        if (component) classes.push('component')
+        if (!component && child.form.conspicuous) {
+          classes.push('conspicuous')
+        }
+        if (!html5) classes.push('section')
         return (
           (
             html5
-              ? child.form.conspicuous
-                ? '<section class="conspicuous">'
+              ? classes.length > 0
+                ? '<section class="' + classes.join(' ') + '">'
                 : '<section>'
-              : child.form.conspicuous
-                ? '<div class="section conspicuous">'
-                : '<div class="section">'
+              : '<div class="' + classes.join(' ') + '">'
           ) +
             ('heading' in child ? heading(depth, child.heading, options) : '') +
-            renderAnnotations(childPath, options.annotations, options) +
-            renderForm(
-              depth,
-              childPath,
-              child.form,
-              blanks,
-              options
+            (
+              isComponent(child)
+                ? (
+                  renderComponent(
+                    depth,
+                    childPath,
+                    child,
+                    blanks,
+                    options
+                  )
+                )
+                : (
+                  renderAnnotations(childPath, options.annotations, options) +
+                  renderForm(
+                    depth,
+                    childPath,
+                    child.form,
+                    blanks,
+                    options
+                  )
+                )
             ) +
           (html5 ? '</section>' : '</div>')
         )
@@ -160,6 +200,49 @@ function renderForm (depth, path, form, blanks, options) {
       return returned
     })
     .join('')
+}
+
+function renderComponent (depth, path, component, blanks, options) {
+  var url = 'https://' + [
+    component.repository,
+    component.publisher,
+    component.project,
+    component.edition
+  ].map(encodeURIComponent).join('/')
+  var returned = '<p><a href="' + url + '">' + url + '</a>'
+  var substitutions = component.substitutions
+  var hasSubstitutions = (
+    Object.keys(substitutions.terms).length > 0 ||
+    Object.keys(substitutions.headings).length > 0
+  )
+  if (hasSubstitutions) {
+    if (component.upgrade) returned += ' with updates and corrections, replacing '
+    else returned += ' replacing '
+    returned += []
+      .concat(
+        Object.keys(substitutions.terms).map(function (from) {
+          var to = substitutions.terms[from]
+          return (
+            '<span class="use">' + from + '</span> with ' +
+            '<span class="use">' + to + '</span>'
+          )
+        })
+      )
+      .concat(
+        Object.keys(substitutions.headings).map(function (from) {
+          var to = substitutions.headings[from]
+          return (
+            '<span class="reference">' + from + '</span> with ' +
+            '<span class="reference">' + to + '</span>'
+          )
+        })
+      )
+      .join(', ')
+  } else {
+    if (component.upgrade) returned += ' with updates and corrections'
+  }
+  returned += '</p>'
+  return returned
 }
 
 function renderAnnotations (path, annotations, options) {
@@ -232,11 +315,18 @@ function equal (a, b) {
 function containsAHeading (child) {
   return (
     has(child, 'heading') ||
-    child.form.content.some(function (element) {
-      return (
-        has(element, 'form') &&
-        containsAHeading(element)
-      )
-    })
+    (
+      has(child, 'form') &&
+      child.form.content.some(function (element) {
+        return (
+          has(element, 'form') &&
+          containsAHeading(element)
+        )
+      })
+    )
   )
+}
+
+function isComponent (child) {
+  return has(child, 'repository')
 }

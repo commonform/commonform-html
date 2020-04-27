@@ -569,3 +569,130 @@ assert.deepStrictEqual(
     .join('')
 )
 ```
+
+Supports components:
+
+
+```javascript
+assert.deepStrictEqual(
+  html(
+    {
+      content: [
+        {
+          heading: 'License Grant',
+          repository: 'commonform.org',
+          publisher: 'kemitchell',
+          project: 'apache-style-license-grant',
+          edition: '1e',
+          upgrade: 'yes',
+          substitutions: {
+            terms: {
+              Licensor: 'Vendor',
+              Licensee: 'Customer',
+              Program: 'Software'
+            },
+            headings: {
+              'Express Warranties': 'Guarantees'
+            }
+          }
+        }
+      ]
+    },
+    [],
+    {
+      html5: true,
+      lists: true
+    }
+  ),
+  [
+    '<article>',
+    '<section class="component">',
+    '<h1>License Grant</h1>',
+    '<p>',
+    '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1e">',
+    'https://commonform.org/kemitchell/apache-style-license-grant/1e',
+    '</a>',
+    ' with updates and corrections,',
+    ' replacing ',
+    '<span class="use">Licensor</span>',
+    ' with ',
+    '<span class="use">Vendor</span>',
+    ', ',
+    '<span class="use">Licensee</span>',
+    ' with ',
+    '<span class="use">Customer</span>',
+    ', ',
+    '<span class="use">Program</span>',
+    ' with ',
+    '<span class="use">Software</span>',
+    ', ',
+    '<span class="reference">Express Warranties</span>',
+    ' with ',
+    '<span class="reference">Guarantees</span>',
+    '</p>',
+    '</section>',
+    '</article>'
+  ]
+    .join('')
+)
+
+assert.deepStrictEqual(
+  html(
+    {
+      content: [
+        {
+          repository: 'commonform.org',
+          publisher: 'kemitchell',
+          project: 'apache-style-license-grant',
+          edition: '1e',
+          substitutions: {
+            terms: {
+              Licensor: 'Vendor',
+              Licensee: 'Customer',
+              Program: 'Software'
+            },
+            headings: {
+              'Express Warranties': 'Guarantees'
+            }
+          }
+        }
+      ]
+    },
+    [],
+    {
+      html5: true,
+      lists: true
+    }
+  ),
+  [
+    '<article>',
+    '<ol>',
+    '<li class="component">',
+    '<p>',
+    '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1e">',
+    'https://commonform.org/kemitchell/apache-style-license-grant/1e',
+    '</a>',
+    ' replacing ',
+    '<span class="use">Licensor</span>',
+    ' with ',
+    '<span class="use">Vendor</span>',
+    ', ',
+    '<span class="use">Licensee</span>',
+    ' with ',
+    '<span class="use">Customer</span>',
+    ', ',
+    '<span class="use">Program</span>',
+    ' with ',
+    '<span class="use">Software</span>',
+    ', ',
+    '<span class="reference">Express Warranties</span>',
+    ' with ',
+    '<span class="reference">Guarantees</span>',
+    '</p>',
+    '</li>',
+    '</ol>',
+    '</article>'
+  ]
+    .join('')
+)
+```
