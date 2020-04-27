@@ -4,6 +4,7 @@ var group = require('commonform-group-series')
 var has = require('has')
 var hash = require('commonform-hash')
 var predicate = require('commonform-predicate')
+var smartify = require('commonform-smartify')
 
 function renderParagraph (paragraph, offset, path, blanks, options) {
   var html5 = options.html5
@@ -296,7 +297,7 @@ module.exports = function commonformHTML (form, blanks, options) {
         : ''
     ) +
     renderAnnotations([], options.annotations, options) +
-    renderForm(depth, [], form, blanks, options) +
+    renderForm(depth, [], options.smartify ? smartify(form) : form, blanks, options) +
     (html5 ? '</article>' : '</div>')
   )
 }

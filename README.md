@@ -389,6 +389,30 @@ assert.deepStrictEqual(
 )
 ```
 
+Set `options.smartify` to replace ASCII punctuation with Unicode punctuation:
+
+```javascript
+assert.deepStrictEqual(
+  html(
+    { content: [ { use: 'Purchaser' }, "'s address is ", { blank: '' }] },
+    //                                  ^ straight
+    [],
+    { smartify: true }
+  ),
+  [
+    '<div class="article">',
+    '<p>',
+    '<span class="term">Purchaser</span>’s ',
+    //                                  ^ curly
+    'address is ',
+    '<span class="blank">[•]</span>',
+    '</p>',
+    '</div>'
+  ]
+    .join('')
+)
+```
+
 The option `{ annotations: [] }` renders annotations in context.
 
 ```javascript
@@ -571,7 +595,6 @@ assert.deepStrictEqual(
 ```
 
 Supports components:
-
 
 ```javascript
 assert.deepStrictEqual(
