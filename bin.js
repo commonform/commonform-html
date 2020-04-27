@@ -53,6 +53,10 @@ function bin (stdin, stdout, stderr, argv, done) {
       demandOption: false
     })
     .implies('directions', 'values')
+    .option('smartify', {
+      describe: 'output Unicode punctuation',
+      type: 'boolean'
+    })
     .version()
     .help()
     .alias('h', 'help')
@@ -72,6 +76,7 @@ function bin (stdin, stdout, stderr, argv, done) {
   if (args.html5) options.html5 = true
   if (args.lists) options.lists = true
   if (args.ids) options.ids = true
+  if (args.smartify) options.smartify = true
 
   // Read the form to be rendered.
   var chunks = []
