@@ -394,7 +394,7 @@ Set `options.smartify` to replace ASCII punctuation with Unicode punctuation:
 ```javascript
 assert.deepStrictEqual(
   html(
-    { content: [ { use: 'Purchaser' }, "'s address is ", { blank: '' }] },
+    { content: [{ use: 'Purchaser' }, "'s address is ", { blank: '' }] },
     //                                  ^ straight
     [],
     { smartify: true }
@@ -580,7 +580,7 @@ assert.deepStrictEqual(
   html(form, [], {
     html5: true,
     lists: true,
-    annotations: annotations,
+    annotations: annotations
   }),
   [
     '<article>',
