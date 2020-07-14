@@ -17,7 +17,7 @@
   "devDependencies": {
     "commonform-lint": "^3.0.2",
     "defence-cli": "^3.0.1",
-    "licensee": "^7.0.3",
+    "licensee": "^8.1.0",
     "nyc": "^15.0.1",
     "replace-require-self": "^1.0.0",
     "standard": "^14.0.2",
