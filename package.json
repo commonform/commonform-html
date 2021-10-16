@@ -19,9 +19,7 @@
     "defence-cli": "^3.0.1",
     "licensee": "^8.1.0",
     "nyc": "^15.0.1",
-    "replace-require-self": "^1.0.0",
-    "standard": "^14.0.2",
-    "standard-markdown": "^6.0.0"
+    "replace-require-self": "^1.0.0"
   },
   "bin": "./bin.js",
   "files": [
@@ -33,7 +31,6 @@
   "scripts": {
     "coverage": "nyc --reporter=lcov --reporter=text npm run test",
     "licenses": "licensee --errors-only",
-    "lint": "standard && standard-markdown",
     "test": "defence README.md | replace-require-self | node"
   }
 }
