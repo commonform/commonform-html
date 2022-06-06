@@ -129,16 +129,7 @@ function renderSeries (depth, offset, path, series, blanks, options) {
                     options
                   )
                 )
-                : (
-                  renderAnnotations(childPath, options.annotations, options) +
-                  renderForm(
-                    depth,
-                    childPath,
-                    child.form,
-                    blanks,
-                    options
-                  )
-                )
+                : renderChild(depth, childPath, child.form, blanks, options)
             ) +
             '</li>'
           )
@@ -177,22 +168,20 @@ function renderSeries (depth, offset, path, series, blanks, options) {
                     options
                   )
                 )
-                : (
-                  renderAnnotations(childPath, options.annotations, options) +
-                  renderForm(
-                    depth,
-                    childPath,
-                    child.form,
-                    blanks,
-                    options
-                  )
-                )
+                : renderChild(depth, childPath, child.form, blanks, options)
             ) +
           (html5 ? '</section>' : '</div>')
         )
       })
       .join('')
   }
+}
+
+function renderChild (depth, path, form, blanks, options) {
+  return (
+    renderAnnotations(path, options.annotations, options) +
+    renderForm(depth, path, form, blanks, options)
+  )
 }
 
 function renderForm (depth, path, form, blanks, options) {
@@ -212,15 +201,27 @@ function renderForm (depth, path, form, blanks, options) {
 
 function renderComponent (depth, path, component, blanks, options) {
   if (has(component, 'form')) {
-    return renderLoadedComponent(depth,path, component, blanks, options)
+    return renderLoadedComponent(depth, path, component, blanks, options)
   } else {
     return renderComponentReference(depth, path, component, blanks, options)
   }
 }
 
 function renderLoadedComponent (depth, path, component, blanks, options) {
-  var returned = ''
-  returned += '<p>Incorporate '
+  var style = options.loadedComponentStyle
+  if (style === 'inline') {
+    return renderChild(depth, path, component.form, blanks, options)
+  } else if (style === 'reference') {
+    return '<p>' + renderLoadedComponentReference(depth, path, component, blanks, options) + '</p>'
+  } else if (style === 'redundant') {
+    return renderLoadedComponentRedundant(depth, path, component, blanks, options)
+  } else {
+    throw new Error('Uknown loaded component display style: ' + style)
+  }
+}
+
+function renderLoadedComponentReference (depth, path, component, blanks, options) {
+  var returned = 'Incorporate '
   var url = component.reference.component + '/' + component.reference.version
   returned += '<a href="' + url + '">'
   var meta = component.component
@@ -232,7 +233,13 @@ function renderLoadedComponent (depth, path, component, blanks, options) {
   returned += '</a>'
   returned += renderSubstitutions(component.reference.substitutions, options)
   returned += '.'
-  returned += 'Quoting for convenience, with any conflicts resolved in favor of the standard:'
+  return returned
+}
+
+function renderLoadedComponentRedundant (depth, path, component, blanks, options) {
+  var returned = '<p>'
+  returned += renderLoadedComponentReference(depth, path, component, blanks, options)
+  returned += options.redundantText || 'Quoting for convenience, with any conflicts resolved in favor of the standard:'
   returned += '</p>'
   returned += renderAnnotations(path, options.annotations, options)
   returned += '<blockquote>'
@@ -298,6 +305,7 @@ module.exports = function commonformHTML (form, blanks, options) {
   var version = options.version
   var depth = options.depth || 0
   var classNames = options.classNames || []
+  options.loadedComponentStyle = options.loadedComponentStyle || 'inline'
   options.annotations = options.annotations || []
   if (options.ids) {
     options.headingSlugger = new GitHubSlugger()

@@ -714,49 +714,49 @@ assert.deepStrictEqual(
 )
 ```
 
-If you pass a form with resolved components labeled with appropriate metadata:
+If you pass a form with resolved components labeled with appropriate metadata, you can specify one of three styles for rendering them specially:
+
 ```javascript
-assert.deepStrictEqual(
-  html(
+var formWithLoaded = {
+  content: [
     {
-      content: [
-        {
-          form: {
-            content: [
-              'Except under ', { reference: 'Warranties' },
-              ', the ', { use: 'Vendor' },
-              ' disclaimers all warranties to the ', { use: 'Customer' },
-              ' related to the ', { use: 'Software' }, '.'
-            ]
+      form: {
+        content: [
+          'Except under ', { reference: 'Warranties' },
+          ', the ', { use: 'Vendor' },
+          ' disclaimers all warranties to the ', { use: 'Customer' },
+          ' related to the ', { use: 'Software' }, '.'
+        ]
+      },
+      reference: {
+        component: 'https://example.com/toy-disclaimer',
+        version: '1.0.0',
+        substitutions:{
+          terms: {
+            Seller: 'Vendor',
+            Buyer: 'Customer',
+            Product: 'Software'
           },
-          reference: {
-            component: 'https://example.com/toy-disclaimer',
-            version: '1.0.0',
-            substitutions:{
-              terms: {
-                Seller: 'Vendor',
-                Buyer: 'Customer',
-                Product: 'Software'
-              },
-              headings: {
-                Warranties: 'Quality Assurances'
-              }
-            }
-          },
-          component: {
-            publisher: 'Example Publisher',
-            name: 'Toy Disclaimer',
-            version: '1.0.0'
+          headings: {
+            Warranties: 'Quality Assurances'
           }
         }
-      ]
-    },
-    [],
-    {
-      html5: true,
-      lists: true
+      },
+      component: {
+        publisher: 'Example Publisher',
+        name: 'Toy Disclaimer',
+        version: '1.0.0'
+      }
     }
-  ),
+  ]
+}
+
+assert.deepStrictEqual(
+  html(formWithLoaded, [], {
+    html5: true,
+    lists: true,
+    loadedComponentStyle: 'redundant' // reference and copy
+  }),
   [
     '<article>',
     '<ol>',
@@ -791,6 +791,114 @@ assert.deepStrictEqual(
     'related to the <span class="term">Software</span>.',
     '</p>',
     '</blockquote>',
+    '</li>',
+    '</ol>',
+    '</article>'
+  ]
+    .join('')
+)
+
+assert.deepStrictEqual(
+  html(formWithLoaded, [], {
+    html5: true,
+    lists: true,
+    loadedComponentStyle: 'redundant',
+    redundantText: 'For reference:' // custom text between
+  }),
+  [
+    '<article>',
+    '<ol>',
+    '<li class="component">',
+    '<p>',
+    'Incorporate ',
+    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
+    ', replacing ',
+    '<span class="term">Seller</span>',
+    ' with ',
+    '<span class="term">Vendor</span>',
+    ', ',
+    '<span class="term">Buyer</span>',
+    ' with ',
+    '<span class="term">Customer</span>',
+    ', ',
+    '<span class="term">Product</span>',
+    ' with ',
+    '<span class="term">Software</span>',
+    ', and ',
+    '<span class="reference">Warranties</span>',
+    ' with ',
+    '<span class="reference">Quality Assurances</span>',
+    '.',
+    'For reference:', // here
+    '</p>',
+    '<blockquote>',
+    '<p>',
+    'Except under <span class="reference">Warranties</span>, ',
+    'the <span class="term">Vendor</span> ',
+    'disclaimers all warranties to the <span class="term">Customer</span> ',
+    'related to the <span class="term">Software</span>.',
+    '</p>',
+    '</blockquote>',
+    '</li>',
+    '</ol>',
+    '</article>'
+  ]
+    .join('')
+)
+assert.deepStrictEqual(
+  html(formWithLoaded, [], {
+    html5: true,
+    lists: true,
+    loadedComponentStyle: 'reference' // just reference
+  }),
+  [
+    '<article>',
+    '<ol>',
+    '<li class="component">',
+    '<p>',
+    'Incorporate ',
+    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
+    ', replacing ',
+    '<span class="term">Seller</span>',
+    ' with ',
+    '<span class="term">Vendor</span>',
+    ', ',
+    '<span class="term">Buyer</span>',
+    ' with ',
+    '<span class="term">Customer</span>',
+    ', ',
+    '<span class="term">Product</span>',
+    ' with ',
+    '<span class="term">Software</span>',
+    ', and ',
+    '<span class="reference">Warranties</span>',
+    ' with ',
+    '<span class="reference">Quality Assurances</span>',
+    '.',
+    '</p>',
+    '</li>',
+    '</ol>',
+    '</article>'
+  ]
+    .join('')
+)
+
+assert.deepStrictEqual(
+  html(formWithLoaded, [], {
+    html5: true,
+    lists: true,
+    loadedComponentStyle: 'inline' // just copy
+  }),
+  [
+    '<article>',
+    '<ol>',
+    '<li class="component">',
+    '<p>',
+    'Except under <span class="reference">Warranties</span>, ',
+    'the <span class="term">Vendor</span> ',
+    'disclaimers all warranties to the <span class="term">Customer</span> ',
+    'related to the <span class="term">Software</span>.',
+    '</p>',
     '</li>',
     '</ol>',
     '</article>'
