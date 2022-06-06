@@ -250,8 +250,9 @@ function renderLoadedComponentRedundant (depth, path, component, blanks, options
 
 function renderComponentReference (depth, path, component, blanks, options) {
   var url = component.component + '/' + component.version
-  var returned = '<p><a href="' + url + '">' + url + '</a>'
+  var returned = '<p>Incorporate <a href="' + url + '">' + url + '</a>'
   returned += renderSubstitutions(component.substitutions, options)
+  returned += '.'
   returned += '</p>'
   return returned
 }
@@ -262,17 +263,17 @@ function renderSubstitutions (substitutions, options) {
     Object.keys(substitutions.headings).length > 0
   )
   if (hasSubstitutions) {
-    return ', replacing ' + englishList('and', []
+    return ' substituting ' + englishList('and', []
       .concat(
         Object.keys(substitutions.terms).map(function (from) {
           var to = substitutions.terms[from]
-          return renderUse(from) + ' with ' + renderUse(to)
+          return renderUse(to) + ' for ' + renderUse(from)
         })
       )
       .concat(
         Object.keys(substitutions.headings).map(function (from) {
           var to = substitutions.headings[from]
-          return renderReference(from, options) + ' with ' + renderReference(to, options)
+          return renderReference(to, options) + ' for ' + renderReference(from, options)
         })
       )
     )
