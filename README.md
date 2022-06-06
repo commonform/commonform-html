@@ -853,6 +853,7 @@ assert.deepStrictEqual(
   html(formWithLoaded, [], {
     html5: true,
     lists: true,
+    incorporate: 'Include',
     loadedComponentStyle: 'reference' // just reference
   }),
   [
@@ -860,7 +861,7 @@ assert.deepStrictEqual(
     '<ol>',
     '<li class="component">',
     '<p>',
-    'Incorporate ',
+    'Include ',
     '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
     ' substituting ',
     '<span class="term">Vendor</span>',

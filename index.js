@@ -221,7 +221,8 @@ function renderLoadedComponent (depth, path, component, blanks, options) {
 }
 
 function renderLoadedComponentReference (depth, path, component, blanks, options) {
-  var returned = 'Incorporate '
+  var returned = options.incorporate || 'Incorporate'
+  returned += ' '
   var url = component.reference.component + '/' + component.reference.version
   returned += '<a href="' + url + '">'
   var meta = component.component
@@ -250,7 +251,7 @@ function renderLoadedComponentRedundant (depth, path, component, blanks, options
 
 function renderComponentReference (depth, path, component, blanks, options) {
   var url = component.component + '/' + component.version
-  var returned = '<p>Incorporate <a href="' + url + '">' + url + '</a>'
+  var returned = '<p>' + (options.incorporate || 'Incorporate') + ' <a href="' + url + '">' + url + '</a>'
   returned += renderSubstitutions(component.substitutions, options)
   returned += '.'
   returned += '</p>'
