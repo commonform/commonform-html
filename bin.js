@@ -35,9 +35,9 @@ function bin (stdin, stdout, stderr, argv, done) {
       describe: 'form title',
       type: 'string'
     })
-    .option('edition', {
+    .option('form-version', {
       alias: 'e',
-      describe: 'form edition',
+      describe: 'form version',
       type: 'string'
     })
     .option('values', {
@@ -57,6 +57,11 @@ function bin (stdin, stdout, stderr, argv, done) {
       describe: 'output Unicode punctuation',
       type: 'boolean'
     })
+    .options('component-style', {
+      describe: 'how to render components',
+      default: 'inline',
+      choices: ['inline', 'redundant', 'reference']
+    })
     .version()
     .help()
     .alias('h', 'help')
@@ -70,8 +75,10 @@ function bin (stdin, stdout, stderr, argv, done) {
     : []
 
   // Prepare rendering options.
-  var options = {}
-  if (args.edition) options.edition = args.edition
+  var options = {
+    componentStyle: args['component-style']
+  }
+  if (args['form-version']) options.version = args['form-version']
   if (args.title) options.title = args.title
   if (args.html5) options.html5 = true
   if (args.lists) options.lists = true

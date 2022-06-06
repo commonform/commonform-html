@@ -252,7 +252,7 @@ assert.deepStrictEqual(
 )
 ```
 
-You can also set a title, edition, or both:
+You can also set a title, version, or both:
 
 ```javascript
 assert.deepStrictEqual(
@@ -276,12 +276,12 @@ assert.deepStrictEqual(
   html(
     { content: ['Hello, ', { blank: '' }] },
     [{ blank: ['content', 1], value: 'Joe' }],
-    { title: 'Welcome', edition: '1e' }
+    { title: 'Welcome', version: '1.0.0' }
   ),
   [
     '<div class="article">',
     '<h1>Welcome</h1>',
-    '<p class="edition">1e</p>',
+    '<p class="version">1.0.0</p>',
     '<p>',
     'Hello, <span class="blank">Joe</span>',
     '</p>',
@@ -298,12 +298,12 @@ assert.deepStrictEqual(
   html(
     { content: ['Hello, ', { blank: '' }] },
     [{ blank: ['content', 1], value: 'Joe' }],
-    { title: 'Welcome', edition: '1e', hash: true }
+    { title: 'Welcome', version: '1.0.0', hash: true }
   ),
   [
     '<div class="article">',
     '<h1>Welcome</h1>',
-    '<p class="edition">1e</p>',
+    '<p class="version">1.0.0</p>',
     '<p class="hash"><code>' +
       'd36c54da27de611b3a9ce7d08638bbd2' +
       '00cf5f3bb41d59320d04bba02ca48f85' +
@@ -603,11 +603,8 @@ assert.deepStrictEqual(
       content: [
         {
           heading: 'License Grant',
-          repository: 'commonform.org',
-          publisher: 'kemitchell',
-          project: 'apache-style-license-grant',
-          edition: '1e',
-          upgrade: 'yes',
+          component: 'https://commonform.org/kemitchell/apache-style-license-grant',
+          version: '1.0.0',
           substitutions: {
             terms: {
               Licensor: 'Vendor',
@@ -632,10 +629,9 @@ assert.deepStrictEqual(
     '<section class="component">',
     '<h1>License Grant</h1>',
     '<p>',
-    '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1e">',
-    'https://commonform.org/kemitchell/apache-style-license-grant/1e',
+    '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1.0.0">',
+    'https://commonform.org/kemitchell/apache-style-license-grant/1.0.0',
     '</a>',
-    ' with updates and corrections,',
     ' replacing ',
     '<span class="use">Licensor</span>',
     ' with ',
@@ -664,10 +660,8 @@ assert.deepStrictEqual(
     {
       content: [
         {
-          repository: 'commonform.org',
-          publisher: 'kemitchell',
-          project: 'apache-style-license-grant',
-          edition: '1e',
+          component: 'https://commonform.org/kemitchell/apache-style-license-grant',
+          version: '1.0.0',
           substitutions: {
             terms: {
               Licensor: 'Vendor',
@@ -692,8 +686,8 @@ assert.deepStrictEqual(
     '<ol>',
     '<li class="component">',
     '<p>',
-    '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1e">',
-    'https://commonform.org/kemitchell/apache-style-license-grant/1e',
+    '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1.0.0">',
+    'https://commonform.org/kemitchell/apache-style-license-grant/1.0.0',
     '</a>',
     ' replacing ',
     '<span class="use">Licensor</span>',

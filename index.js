@@ -100,7 +100,7 @@ function renderSeries (depth, offset, path, series, blanks, options) {
         .map(function (child, index) {
           var childPath = path.concat('content', offset + index, 'form')
           var classes = []
-          var component = isComponent(child)
+          var component = predicate.component(child)
           if (component) classes.push('component')
           if (!component && child.form.conspicuous) {
             classes.push('conspicuous')
@@ -112,7 +112,7 @@ function renderSeries (depth, offset, path, series, blanks, options) {
                 : '<li>'
             ) +
             (
-              isComponent(child)
+              component
                 ? (
                   renderComponent(
                     depth,
@@ -144,7 +144,7 @@ function renderSeries (depth, offset, path, series, blanks, options) {
       .map(function (child, index) {
         var childPath = path.concat('content', offset + index, 'form')
         var classes = []
-        var component = isComponent(child)
+        var component = predicate.component(child)
         if (component) classes.push('component')
         if (!component && child.form.conspicuous) {
           classes.push('conspicuous')
@@ -160,7 +160,7 @@ function renderSeries (depth, offset, path, series, blanks, options) {
           ) +
             ('heading' in child ? heading(depth, child.heading, options) : '') +
             (
-              isComponent(child)
+              component
                 ? (
                   renderComponent(
                     depth,
@@ -204,12 +204,7 @@ function renderForm (depth, path, form, blanks, options) {
 }
 
 function renderComponent (depth, path, component, blanks, options) {
-  var url = 'https://' + [
-    component.repository,
-    component.publisher,
-    component.project,
-    component.edition
-  ].map(encodeURIComponent).join('/')
+  var url = component.component + '/' + component.version
   var returned = '<p><a href="' + url + '">' + url + '</a>'
   var substitutions = component.substitutions
   var hasSubstitutions = (
@@ -217,8 +212,7 @@ function renderComponent (depth, path, component, blanks, options) {
     Object.keys(substitutions.headings).length > 0
   )
   if (hasSubstitutions) {
-    if (component.upgrade) returned += ' with updates and corrections, replacing '
-    else returned += ' replacing '
+    returned += ' replacing '
     returned += []
       .concat(
         Object.keys(substitutions.terms).map(function (from) {
@@ -239,8 +233,6 @@ function renderComponent (depth, path, component, blanks, options) {
         })
       )
       .join(', ')
-  } else {
-    if (component.upgrade) returned += ' with updates and corrections'
   }
   returned += '</p>'
   return returned
@@ -269,7 +261,7 @@ module.exports = function commonformHTML (form, blanks, options) {
   options = options || {}
   var html5 = options.html5
   var title = options.title
-  var edition = options.edition
+  var version = options.version
   var depth = options.depth || 0
   var classNames = options.classNames || []
   options.annotations = options.annotations || []
@@ -290,7 +282,7 @@ module.exports = function commonformHTML (form, blanks, options) {
         : '<div class="' + classNames.join(' ') + '">'
     ) +
     (title ? ('<h1>' + escape(title) + '</h1>') : '') +
-    (edition ? ('<p class="edition">' + escape(edition) + '</p>') : '') +
+    (version ? ('<p class="version">' + escape(version) + '</p>') : '') +
     (
       options.hash
         ? ('<p class="hash"><code>' + hash(form) + '</code></p>')
@@ -326,8 +318,4 @@ function containsAHeading (child) {
       })
     )
   )
-}
-
-function isComponent (child) {
-  return has(child, 'repository')
 }

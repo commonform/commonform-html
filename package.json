@@ -4,9 +4,9 @@
   "version": "3.6.1",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
   "dependencies": {
-    "commonform-group-series": "^2.0.0",
+    "commonform-group-series": "^3.0.0",
     "commonform-hash": "^1.0.0",
-    "commonform-predicate": "^3.0.1",
+    "commonform-predicate": "^4.0.0",
     "commonform-prepare-blanks": "^1.0.1",
     "commonform-smartify": "^1.0.1",
     "escape-html": "^1.0.2",
