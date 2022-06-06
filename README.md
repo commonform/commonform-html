@@ -244,7 +244,7 @@ assert.deepStrictEqual(
     '</section>',
     '<section>',
     '<h1 id="second-heading">Second Heading</h1>',
-    '<p>reference to <a href="#first-heading">First Heading</a></p>',
+    '<p>reference to <a class="reference" href="#first-heading">First Heading</a></p>',
     '</section>',
     '</article>'
   ]
@@ -632,19 +632,19 @@ assert.deepStrictEqual(
     '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1.0.0">',
     'https://commonform.org/kemitchell/apache-style-license-grant/1.0.0',
     '</a>',
-    ' replacing ',
-    '<span class="use">Licensor</span>',
+    ', replacing ',
+    '<span class="term">Licensor</span>',
     ' with ',
-    '<span class="use">Vendor</span>',
+    '<span class="term">Vendor</span>',
     ', ',
-    '<span class="use">Licensee</span>',
+    '<span class="term">Licensee</span>',
     ' with ',
-    '<span class="use">Customer</span>',
+    '<span class="term">Customer</span>',
     ', ',
-    '<span class="use">Program</span>',
+    '<span class="term">Program</span>',
     ' with ',
-    '<span class="use">Software</span>',
-    ', ',
+    '<span class="term">Software</span>',
+    ', and ',
     '<span class="reference">Express Warranties</span>',
     ' with ',
     '<span class="reference">Guarantees</span>',
@@ -689,23 +689,108 @@ assert.deepStrictEqual(
     '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1.0.0">',
     'https://commonform.org/kemitchell/apache-style-license-grant/1.0.0',
     '</a>',
-    ' replacing ',
-    '<span class="use">Licensor</span>',
+    ', replacing ',
+    '<span class="term">Licensor</span>',
     ' with ',
-    '<span class="use">Vendor</span>',
+    '<span class="term">Vendor</span>',
     ', ',
-    '<span class="use">Licensee</span>',
+    '<span class="term">Licensee</span>',
     ' with ',
-    '<span class="use">Customer</span>',
+    '<span class="term">Customer</span>',
     ', ',
-    '<span class="use">Program</span>',
+    '<span class="term">Program</span>',
     ' with ',
-    '<span class="use">Software</span>',
-    ', ',
+    '<span class="term">Software</span>',
+    ', and ',
     '<span class="reference">Express Warranties</span>',
     ' with ',
     '<span class="reference">Guarantees</span>',
     '</p>',
+    '</li>',
+    '</ol>',
+    '</article>'
+  ]
+    .join('')
+)
+```
+
+If you pass a form with resolved components labeled with appropriate metadata:
+```javascript
+assert.deepStrictEqual(
+  html(
+    {
+      content: [
+        {
+          form: {
+            content: [
+              'Except under ', { reference: 'Warranties' },
+              ', the ', { use: 'Vendor' },
+              ' disclaimers all warranties to the ', { use: 'Customer' },
+              ' related to the ', { use: 'Software' }, '.'
+            ]
+          },
+          reference: {
+            component: 'https://example.com/toy-disclaimer',
+            version: '1.0.0',
+            substitutions:{
+              terms: {
+                Seller: 'Vendor',
+                Buyer: 'Customer',
+                Product: 'Software'
+              },
+              headings: {
+                Warranties: 'Quality Assurances'
+              }
+            }
+          },
+          component: {
+            publisher: 'Example Publisher',
+            name: 'Toy Disclaimer',
+            version: '1.0.0'
+          }
+        }
+      ]
+    },
+    [],
+    {
+      html5: true,
+      lists: true
+    }
+  ),
+  [
+    '<article>',
+    '<ol>',
+    '<li class="component">',
+    '<p>',
+    'Incorporate ',
+    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
+    ', replacing ',
+    '<span class="term">Seller</span>',
+    ' with ',
+    '<span class="term">Vendor</span>',
+    ', ',
+    '<span class="term">Buyer</span>',
+    ' with ',
+    '<span class="term">Customer</span>',
+    ', ',
+    '<span class="term">Product</span>',
+    ' with ',
+    '<span class="term">Software</span>',
+    ', and ',
+    '<span class="reference">Warranties</span>',
+    ' with ',
+    '<span class="reference">Quality Assurances</span>',
+    '.',
+    'Quoting for convenience, with any conflicts resolved in favor of the standard:',
+    '</p>',
+    '<blockquote>',
+    '<p>',
+    'Except under <span class="reference">Warranties</span>, ',
+    'the <span class="term">Vendor</span> ',
+    'disclaimers all warranties to the <span class="term">Customer</span> ',
+    'related to the <span class="term">Software</span>.',
+    '</p>',
+    '</blockquote>',
     '</li>',
     '</ol>',
     '</article>'

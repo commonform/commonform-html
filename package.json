@@ -9,6 +9,7 @@
     "commonform-predicate": "^4.0.0",
     "commonform-prepare-blanks": "^1.0.1",
     "commonform-smartify": "^1.0.1",
+    "english-list": "^1.0.0",
     "escape-html": "^1.0.2",
     "github-slugger": "^1.2.1",
     "has": "^1.0.3",

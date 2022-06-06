@@ -1,4 +1,5 @@
 var GitHubSlugger = require('github-slugger')
+var englishList = require('english-list')
 var escape = require('escape-html')
 var group = require('commonform-group-series')
 var has = require('has')
@@ -15,11 +16,7 @@ function renderParagraph (paragraph, offset, path, blanks, options) {
         if (predicate.text(element)) {
           return escape(element)
         } else if (predicate.use(element)) {
-          return (
-            '<span class="term">' +
-              escape(element.use) +
-            '</span>'
-          )
+          return renderUse(element.use)
         } else if (predicate.definition(element)) {
           return (
             (html5 ? '<dfn>' : '<span class="definition">') +
@@ -35,28 +32,38 @@ function renderParagraph (paragraph, offset, path, blanks, options) {
             '</span>'
           )
         } else if (predicate.reference(element)) {
-          var heading = element.reference
-          if (options.ids) {
-            options.referenceSlugger.reset()
-            var slug = options.referenceSlugger.slug(heading)
-            return (
-              // TODO: Add class="reference"
-              '<a href="#' + slug + '">' +
-                escape(heading) +
-              '</a>'
-            )
-          } else {
-            return (
-              '<span class="reference">' +
-                escape(heading) +
-              '</span>'
-            )
-          }
+          return renderReference(element.reference, options)
         }
       })
       .join('') +
     '</p>'
   )
+}
+
+function renderUse (term) {
+  return (
+    '<span class="term">' +
+      escape(term) +
+    '</span>'
+  )
+}
+
+function renderReference (heading, options) {
+  if (options.ids) {
+    options.referenceSlugger.reset()
+    var slug = options.referenceSlugger.slug(heading)
+    return (
+      '<a class="reference" href="#' + slug + '">' +
+        escape(heading) +
+      '</a>'
+    )
+  } else {
+    return (
+      '<span class="reference">' +
+        escape(heading) +
+      '</span>'
+    )
+  }
 }
 
 function matchingValue (path, blanks) {
@@ -204,38 +211,65 @@ function renderForm (depth, path, form, blanks, options) {
 }
 
 function renderComponent (depth, path, component, blanks, options) {
+  if (has(component, 'form')) {
+    return renderLoadedComponent(depth,path, component, blanks, options)
+  } else {
+    return renderComponentReference(depth, path, component, blanks, options)
+  }
+}
+
+function renderLoadedComponent (depth, path, component, blanks, options) {
+  var returned = ''
+  returned += '<p>Incorporate '
+  var url = component.reference.component + '/' + component.reference.version
+  returned += '<a href="' + url + '">'
+  var meta = component.component
+  returned += meta.publisher
+  returned += ' '
+  returned += meta.name
+  returned += ' '
+  returned += meta.version
+  returned += '</a>'
+  returned += renderSubstitutions(component.reference.substitutions, options)
+  returned += '.'
+  returned += 'Quoting for convenience, with any conflicts resolved in favor of the standard:'
+  returned += '</p>'
+  returned += renderAnnotations(path, options.annotations, options)
+  returned += '<blockquote>'
+  returned += renderForm(depth, path, component.form, blanks, options)
+  returned += '</blockquote>'
+  return returned
+}
+
+function renderComponentReference (depth, path, component, blanks, options) {
   var url = component.component + '/' + component.version
   var returned = '<p><a href="' + url + '">' + url + '</a>'
-  var substitutions = component.substitutions
+  returned += renderSubstitutions(component.substitutions, options)
+  returned += '</p>'
+  return returned
+}
+
+function renderSubstitutions (substitutions, options) {
   var hasSubstitutions = (
     Object.keys(substitutions.terms).length > 0 ||
     Object.keys(substitutions.headings).length > 0
   )
   if (hasSubstitutions) {
-    returned += ' replacing '
-    returned += []
+    return ', replacing ' + englishList('and', []
       .concat(
         Object.keys(substitutions.terms).map(function (from) {
           var to = substitutions.terms[from]
-          return (
-            '<span class="use">' + from + '</span> with ' +
-            '<span class="use">' + to + '</span>'
-          )
+          return renderUse(from) + ' with ' + renderUse(to)
         })
       )
       .concat(
         Object.keys(substitutions.headings).map(function (from) {
           var to = substitutions.headings[from]
-          return (
-            '<span class="reference">' + from + '</span> with ' +
-            '<span class="reference">' + to + '</span>'
-          )
+          return renderReference(from, options) + ' with ' + renderReference(to, options)
         })
       )
-      .join(', ')
-  }
-  returned += '</p>'
-  return returned
+    )
+  } else return ''
 }
 
 function renderAnnotations (path, annotations, options) {
