@@ -240,6 +240,7 @@ function renderLoadedComponentReference (depth, path, component, blanks, options
 function renderLoadedComponentRedundant (depth, path, component, blanks, options) {
   var returned = '<p>'
   returned += renderLoadedComponentReference(depth, path, component, blanks, options)
+  returned += ' '
   returned += options.redundantText || 'Quoting for convenience, with any conflicts resolved in favor of the standard:'
   returned += '</p>'
   returned += renderAnnotations(path, options.annotations, options)
@@ -268,17 +269,22 @@ function renderSubstitutions (substitutions, options) {
       .concat(
         Object.keys(substitutions.terms).map(function (from) {
           var to = substitutions.terms[from]
-          return renderUse(to) + ' for ' + renderUse(from)
+          return 'the term ' + quote(to) + ' for the term ' + quote(from)
         })
       )
       .concat(
         Object.keys(substitutions.headings).map(function (from) {
           var to = substitutions.headings[from]
-          return renderReference(to, options) + ' for ' + renderReference(from, options)
+          return 'references to ' + quote(to) + ' for references to ' + quote(from)
         })
       )
     )
   } else return ''
+
+  function quote (string) {
+    if (options.smartify) return '“' + string + '”'
+    else return '"' + string + '"'
+  }
 }
 
 function renderAnnotations (path, annotations, options) {
