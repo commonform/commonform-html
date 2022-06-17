@@ -212,7 +212,7 @@ function renderLoadedComponent (depth, path, component, blanks, options) {
   if (style === 'inline') {
     return renderChild(depth, path, component.form, blanks, options)
   } else if (style === 'reference') {
-    return '<p>' + renderLoadedComponentReference(depth, path, component, blanks, options) + '</p>'
+    return renderLoadedComponentReference(depth, path, component, blanks, options)
   } else if (style === 'redundant') {
     return renderLoadedComponentRedundant(depth, path, component, blanks, options)
   } else {
@@ -221,7 +221,7 @@ function renderLoadedComponent (depth, path, component, blanks, options) {
 }
 
 function renderLoadedComponentReference (depth, path, component, blanks, options) {
-  var returned = options.incorporate || 'Incorporate'
+  var returned = '<p>' + (options.incorporate || 'Incorporate')
   returned += ' '
   var url = component.reference.component + '/' + component.reference.version
   returned += '<a href="' + url + '">'
@@ -232,15 +232,24 @@ function renderLoadedComponentReference (depth, path, component, blanks, options
   returned += ' '
   returned += meta.version
   returned += '</a>'
-  returned += renderSubstitutions(component.reference.substitutions, options)
-  returned += '.'
+  var substitutions = component.reference.substitutions
+  var hasSubstitutions = (
+    Object.keys(substitutions.terms).length > 0 ||
+    Object.keys(substitutions.headings).length > 0 ||
+    Object.keys(substitutions.blanks).length > 0
+  )
+  if (hasSubstitutions) {
+    returned += ' substituting:</p>'
+    returned += renderSubstitutions(component.reference.substitutions, options)
+  } else {
+    returned += '.</p>'
+  }
   return returned
 }
 
 function renderLoadedComponentRedundant (depth, path, component, blanks, options) {
-  var returned = '<p>'
-  returned += renderLoadedComponentReference(depth, path, component, blanks, options)
-  returned += ' '
+  var returned = renderLoadedComponentReference(depth, path, component, blanks, options)
+  returned += '<p>'
   returned += options.redundantText || 'Quoting for convenience, with any conflicts resolved in favor of the standard:'
   returned += '</p>'
   returned += renderAnnotations(path, options.annotations, options)
@@ -252,34 +261,39 @@ function renderLoadedComponentRedundant (depth, path, component, blanks, options
 
 function renderComponentReference (depth, path, component, blanks, options) {
   var url = component.component + '/' + component.version
+  var substitutions = component.substitutions
+  var hasSubstitutions = (
+    Object.keys(substitutions.terms).length > 0 ||
+    Object.keys(substitutions.headings).length > 0 ||
+    Object.keys(substitutions.blanks).length > 0
+  )
   var returned = '<p>' + (options.incorporate || 'Incorporate') + ' <a href="' + url + '">' + url + '</a>'
-  returned += renderSubstitutions(component.substitutions, options)
-  returned += '.'
-  returned += '</p>'
+  if (hasSubstitutions) {
+    returned += ' substituting:</p>'
+    returned += renderSubstitutions(substitutions, options)
+  } else {
+    returned += '.</p>'
+  }
   return returned
 }
 
 function renderSubstitutions (substitutions, options) {
-  var hasSubstitutions = (
-    Object.keys(substitutions.terms).length > 0 ||
-    Object.keys(substitutions.headings).length > 0
-  )
-  if (hasSubstitutions) {
-    return ' substituting ' + englishList('and', []
-      .concat(
-        Object.keys(substitutions.terms).map(function (from) {
-          var to = substitutions.terms[from]
-          return 'the term ' + quote(to) + ' for the term ' + quote(from)
-        })
-      )
-      .concat(
-        Object.keys(substitutions.headings).map(function (from) {
-          var to = substitutions.headings[from]
-          return 'references to ' + quote(to) + ' for references to ' + quote(from)
-        })
-      )
-    )
-  } else return ''
+  return '<ul>' +
+    Object.keys(substitutions.terms).sort().map(function (from) {
+      var to = substitutions.terms[from]
+      return '<li>the term ' + quote(to) + ' for the term ' + quote(from) + '</li>'
+    }).join('') +
+    Object.keys(substitutions.headings).sort().map(function (from) {
+      var to = substitutions.headings[from]
+      return '<li>references to ' + quote(to) + ' for references to ' + quote(from) + '</li>'
+    }).join('') +
+    Object.keys(substitutions.blanks)
+      .sort(function (a, b) { return parseInt(a) - parseInt(b) })
+      .map(function (number) {
+        var value = substitutions.blanks[number]
+        return '<li>' + quote(value) + ' for blank ' + number + '</li>'
+      }).join('') +
+    '</ul>'
 
   function quote (string) {
     if (options.smartify) return '“' + string + '”'

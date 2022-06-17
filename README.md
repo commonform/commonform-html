@@ -613,6 +613,9 @@ assert.deepStrictEqual(
             },
             headings: {
               'Express Warranties': 'Guarantees'
+            },
+            blanks: {
+              1: 'United States'
             }
           }
         }
@@ -633,12 +636,15 @@ assert.deepStrictEqual(
     '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1.0.0">',
     'https://commonform.org/kemitchell/apache-style-license-grant/1.0.0',
     '</a>',
-    ' substituting ',
-    'the term "Vendor" for the term "Licensor", ',
-    'the term "Customer" for the term "Licensee", ',
-    'the term "Software" for the term "Program", and ',
-    'references to "Guarantees" for references to "Express Warranties".',
+    ' substituting:',
     '</p>',
+    '<ul>',
+    '<li>the term "Customer" for the term "Licensee"</li>',
+    '<li>the term "Vendor" for the term "Licensor"</li>',
+    '<li>the term "Software" for the term "Program"</li>',
+    '<li>references to "Guarantees" for references to "Express Warranties"</li>',
+    '<li>"United States" for blank 1</li>',
+    '</ul>',
     '</section>',
     '</article>'
   ]
@@ -660,6 +666,9 @@ assert.deepStrictEqual(
             },
             headings: {
               'Express Warranties': 'Guarantees'
+            },
+            blanks: {
+              1: 'United States'
             }
           }
         }
@@ -680,12 +689,15 @@ assert.deepStrictEqual(
     '<a href="https://commonform.org/kemitchell/apache-style-license-grant/1.0.0">',
     'https://commonform.org/kemitchell/apache-style-license-grant/1.0.0',
     '</a>',
-    ' substituting ',
-    'the term "Vendor" for the term "Licensor", ',
-    'the term "Customer" for the term "Licensee", ',
-    'the term "Software" for the term "Program", and ',
-    'references to "Guarantees" for references to "Express Warranties".',
+    ' substituting:',
     '</p>',
+    '<ul>',
+    '<li>the term "Customer" for the term "Licensee"</li>',
+    '<li>the term "Vendor" for the term "Licensor"</li>',
+    '<li>the term "Software" for the term "Program"</li>',
+    '<li>references to "Guarantees" for references to "Express Warranties"</li>',
+    '<li>"United States" for blank 1</li>',
+    '</ul>',
     '</li>',
     '</ol>',
     '</article>'
@@ -719,7 +731,8 @@ var formWithLoaded = {
           },
           headings: {
             Warranties: 'Quality Assurances'
-          }
+          },
+          blanks: {}
         }
       },
       component: {
@@ -744,13 +757,15 @@ assert.deepStrictEqual(
     '<p>',
     'Incorporate ',
     '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
-    ' substituting ',
-    'the term "Vendor" for the term "Seller", ',
-    'the term "Customer" for the term "Buyer", ',
-    'the term "Software" for the term "Product", and ',
-    'references to "Quality Assurances" for references to "Warranties". ',
-    'Quoting for convenience, with any conflicts resolved in favor of the standard:',
+    ' substituting:',
     '</p>',
+    '<ul>',
+    '<li>the term "Customer" for the term "Buyer"</li>',
+    '<li>the term "Software" for the term "Product"</li>',
+    '<li>the term "Vendor" for the term "Seller"</li>',
+    '<li>references to "Quality Assurances" for references to "Warranties"</li>',
+    '</ul>',
+    '<p>Quoting for convenience, with any conflicts resolved in favor of the standard:</p>',
     '<blockquote>',
     '<p>',
     'Except under <span class="reference">Warranties</span>, ',
@@ -780,11 +795,15 @@ assert.deepStrictEqual(
     '<p>',
     'Incorporate ',
     '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
-    ' substituting ',
-    'the term "Vendor" for the term "Seller", ',
-    'the term "Customer" for the term "Buyer", ',
-    'the term "Software" for the term "Product", and ',
-    'references to "Quality Assurances" for references to "Warranties". ',
+    ' substituting:',
+    '</p>',
+    '<ul>',
+    '<li>the term "Customer" for the term "Buyer"</li>',
+    '<li>the term "Software" for the term "Product"</li>',
+    '<li>the term "Vendor" for the term "Seller"</li>',
+    '<li>references to "Quality Assurances" for references to "Warranties"</li>',
+    '</ul>',
+    '<p>',
     'For reference:', // here
     '</p>',
     '<blockquote>',
@@ -815,12 +834,14 @@ assert.deepStrictEqual(
     '<p>',
     'Include ',
     '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
-    ' substituting ',
-    'the term "Vendor" for the term "Seller", ',
-    'the term "Customer" for the term "Buyer", ',
-    'the term "Software" for the term "Product", and ',
-    'references to "Quality Assurances" for references to "Warranties".',
+    ' substituting:',
     '</p>',
+    '<ul>',
+    '<li>the term "Customer" for the term "Buyer"</li>',
+    '<li>the term "Software" for the term "Product"</li>',
+    '<li>the term "Vendor" for the term "Seller"</li>',
+    '<li>references to "Quality Assurances" for references to "Warranties"</li>',
+    '</ul>',
     '</li>',
     '</ol>',
     '</article>'
