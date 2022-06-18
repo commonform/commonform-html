@@ -255,11 +255,11 @@ function renderSubstitutions (substitutions, options) {
   return '<ul>' +
     Object.keys(substitutions.terms).sort().map(from => {
       const to = substitutions.terms[from]
-      return `<li>the term ${quote(to)} for the term ${quote(from)}</li>`
+      return `<li>the term ${renderUse(to)} for the term ${renderUse(from)}</li>`
     }).join('') +
     Object.keys(substitutions.headings).sort().map(from => {
       const to = substitutions.headings[from]
-      return `<li>references to ${quote(to)} for references to ${quote(from)}</li>`
+      return `<li>references to ${renderReference(to, options)} for references to ${renderReference(from, { ids: false })}</li>`
     }).join('') +
     Object.keys(substitutions.blanks)
       .sort((a, b) => parseInt(a) - parseInt(b))
