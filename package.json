@@ -13,7 +13,7 @@
     "escape-html": "^1.0.2",
     "github-slugger": "^1.2.1",
     "has": "^1.0.3",
-    "yargs": "^15.4.1"
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "commonform-lint": "^4.0.0",
