@@ -16,7 +16,7 @@
     "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "commonform-lint": "^3.0.2",
+    "commonform-lint": "^4.0.0",
     "defence-cli": "^3.0.1",
     "licensee": "^8.1.0",
     "nyc": "^15.0.1",
