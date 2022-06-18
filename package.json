@@ -21,7 +21,8 @@
     "licensee": "^8.1.0",
     "nyc": "^15.0.1",
     "replace-require-self": "^1.0.0",
-    "standard": "^17.0.0"
+    "standard": "^17.0.0",
+    "standard-markdown": "^7.1.0"
   },
   "bin": "./bin.js",
   "files": [
@@ -32,7 +33,7 @@
   "repository": "commonform/commonform-html",
   "scripts": {
     "coverage": "nyc --reporter=lcov --reporter=text npm run test",
-    "lint": "standard",
+    "lint": "standard && standard-markdown",
     "licenses": "licensee --errors-only",
     "test": "defence README.md | replace-require-self | node"
   }

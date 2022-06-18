@@ -725,7 +725,7 @@ const formWithLoaded = {
       reference: {
         component: 'https://example.com/toy-disclaimer',
         version: '1.0.0',
-        substitutions:{
+        substitutions: {
           terms: {
             Seller: 'Vendor',
             Buyer: 'Customer',
