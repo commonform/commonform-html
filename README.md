@@ -3,13 +3,13 @@
 render [Common Forms](https://www.npmjs.com/package/commonform-validate) in HTML
 
 ```javascript
-var html = require('commonform-html')
+const html = require('commonform-html')
 ```
 
 Call the exported function with a Common Form, receive a string of HTML:
 
 ```javascript
-var assert = require('assert')
+const assert = require('assert')
 
 assert.deepStrictEqual(
   html({ content: ['Just a test'] }),
@@ -573,9 +573,9 @@ assert.deepStrictEqual(
 Annotations to the root of the form appear just within the root element:
 
 ```javascript
-var lint = require('commonform-lint')
-var form = { content: ['See ', { reference: 'Nonexistent' }] }
-var annotations = lint(form)
+const lint = require('commonform-lint')
+const form = { content: ['See ', { reference: 'Nonexistent' }] }
+const annotations = lint(form)
 assert.deepStrictEqual(
   html(form, [], {
     html5: true,
@@ -643,7 +643,7 @@ assert.deepStrictEqual(
     '<li>the term "Vendor" for the term "Licensor"</li>',
     '<li>the term "Software" for the term "Program"</li>',
     '<li>references to "Guarantees" for references to "Express Warranties"</li>',
-    '<li>"United States" for blank 1</li>',
+    '<li>"United States" for the first blank</li>',
     '</ul>',
     '</section>',
     '</article>'
@@ -696,7 +696,7 @@ assert.deepStrictEqual(
     '<li>the term "Vendor" for the term "Licensor"</li>',
     '<li>the term "Software" for the term "Program"</li>',
     '<li>references to "Guarantees" for references to "Express Warranties"</li>',
-    '<li>"United States" for blank 1</li>',
+    '<li>"United States" for the first blank</li>',
     '</ul>',
     '</li>',
     '</ol>',
@@ -709,7 +709,7 @@ assert.deepStrictEqual(
 If you pass a form with resolved components labeled with appropriate metadata, you can specify one of three styles for rendering them specially:
 
 ```javascript
-var formWithLoaded = {
+const formWithLoaded = {
   content: [
     {
       form: {
@@ -756,7 +756,7 @@ assert.deepStrictEqual(
     '<li class="component">',
     '<p>',
     'Incorporate ',
-    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
+    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer Version 1.0.0</a>',
     ' substituting:',
     '</p>',
     '<ul>',
@@ -794,7 +794,7 @@ assert.deepStrictEqual(
     '<li class="component">',
     '<p>',
     'Incorporate ',
-    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
+    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer Version 1.0.0</a>',
     ' substituting:',
     '</p>',
     '<ul>',
@@ -833,7 +833,7 @@ assert.deepStrictEqual(
     '<li class="component">',
     '<p>',
     'Include ',
-    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer 1.0.0</a>',
+    '<a href="https://example.com/toy-disclaimer/1.0.0">Example Publisher Toy Disclaimer Version 1.0.0</a>',
     ' substituting:',
     '</p>',
     '<ul>',

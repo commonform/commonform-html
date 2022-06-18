@@ -14,7 +14,7 @@ if (module.parent) {
 }
 
 function bin (stdin, stdout, stderr, argv, done) {
-  var args = require('yargs')
+  const args = require('yargs')
     .scriptName('commonform-html')
     .option('html5', {
       describe: 'output HTML5',
@@ -75,14 +75,14 @@ function bin (stdin, stdout, stderr, argv, done) {
     .parse(argv)
 
   // Prepare fill-in-the-blank values.
-  var blanks = (args.values && args.directions)
+  const blanks = (args.values && args.directions)
     ? require('commonform-prepare-blanks')(
       args.values, args.directions
     )
     : []
 
   // Prepare rendering options.
-  var options = {
+  const options = {
     loadedComponentStyle: args['component-style']
   }
   if (args['form-version']) options.version = args['form-version']
@@ -95,7 +95,7 @@ function bin (stdin, stdout, stderr, argv, done) {
   if (args['incorporate-component-text']) options.incorporateComponentText = args['incorporate-component-text']
 
   // Read the form to be rendered.
-  var chunks = []
+  const chunks = []
   stdin
     .on('data', function (chunk) {
       chunks.push(chunk)
@@ -104,16 +104,18 @@ function bin (stdin, stdout, stderr, argv, done) {
       return fail(error)
     })
     .once('end', function () {
-      var buffer = Buffer.concat(chunks)
+      const buffer = Buffer.concat(chunks)
+      let form
       try {
-        var form = JSON.parse(buffer)
+        form = JSON.parse(buffer)
       } catch (error) {
         return fail(error)
       }
 
       // Render.
+      let rendered
       try {
-        var rendered = require('./')(form, blanks, options)
+        rendered = require('./')(form, blanks, options)
       } catch (error) {
         return fail(error)
       }
