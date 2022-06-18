@@ -59,8 +59,15 @@ function bin (stdin, stdout, stderr, argv, done) {
     })
     .options('component-style', {
       describe: 'how to render components',
-      default: 'inline',
-      choices: ['inline', 'redundant', 'reference']
+      default: 'both',
+      choices: ['copy', 'reference', 'both']
+    })
+    .option('quote-component-text', {
+      description: 'text before quoted component contents'
+    })
+    .option('incorporate-component-text', {
+      description: 'text before component references',
+      default: 'Incorporate'
     })
     .version()
     .help()
@@ -76,7 +83,7 @@ function bin (stdin, stdout, stderr, argv, done) {
 
   // Prepare rendering options.
   var options = {
-    componentStyle: args['component-style']
+    loadedComponentStyle: args['component-style']
   }
   if (args['form-version']) options.version = args['form-version']
   if (args.title) options.title = args.title
@@ -84,6 +91,8 @@ function bin (stdin, stdout, stderr, argv, done) {
   if (args.lists) options.lists = true
   if (args.ids) options.ids = true
   if (args.smartify) options.smartify = true
+  if (args['quote-component-text']) options.quoteComponentText = args['quote-component-text']
+  if (args['incorporate-component-text']) options.incorporateComponentText = args['incorporate-component-text']
 
   // Read the form to be rendered.
   var chunks = []

@@ -748,7 +748,7 @@ assert.deepStrictEqual(
   html(formWithLoaded, [], {
     html5: true,
     lists: true,
-    loadedComponentStyle: 'redundant' // reference and copy
+    loadedComponentStyle: 'both' // reference and copy
   }),
   [
     '<article>',
@@ -785,8 +785,8 @@ assert.deepStrictEqual(
   html(formWithLoaded, [], {
     html5: true,
     lists: true,
-    loadedComponentStyle: 'redundant',
-    redundantText: 'For reference:' // custom text between
+    loadedComponentStyle: 'both',
+    quoteComponentText: 'For reference:' // custom text between
   }),
   [
     '<article>',
@@ -824,7 +824,7 @@ assert.deepStrictEqual(
   html(formWithLoaded, [], {
     html5: true,
     lists: true,
-    incorporate: 'Include',
+    incorporateComponentText: 'Include',
     loadedComponentStyle: 'reference' // just reference
   }),
   [
@@ -853,7 +853,7 @@ assert.deepStrictEqual(
   html(formWithLoaded, [], {
     html5: true,
     lists: true,
-    loadedComponentStyle: 'inline' // just copy
+    loadedComponentStyle: 'copy'
   }),
   [
     '<article>',

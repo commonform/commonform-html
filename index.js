@@ -209,19 +209,19 @@ function renderComponent (depth, path, component, blanks, options) {
 
 function renderLoadedComponent (depth, path, component, blanks, options) {
   var style = options.loadedComponentStyle
-  if (style === 'inline') {
+  if (style === 'copy') {
     return renderChild(depth, path, component.form, blanks, options)
   } else if (style === 'reference') {
     return renderLoadedComponentReference(depth, path, component, blanks, options)
-  } else if (style === 'redundant') {
-    return renderLoadedComponentRedundant(depth, path, component, blanks, options)
+  } else if (style === 'both') {
+    return renderLoadedComponentBoth(depth, path, component, blanks, options)
   } else {
     throw new Error('Uknown loaded component display style: ' + style)
   }
 }
 
 function renderLoadedComponentReference (depth, path, component, blanks, options) {
-  var returned = '<p>' + (options.incorporate || 'Incorporate')
+  var returned = '<p>' + options.incorporateComponentText
   returned += ' '
   var url = component.reference.component + '/' + component.reference.version
   returned += '<a href="' + url + '">'
@@ -247,10 +247,10 @@ function renderLoadedComponentReference (depth, path, component, blanks, options
   return returned
 }
 
-function renderLoadedComponentRedundant (depth, path, component, blanks, options) {
+function renderLoadedComponentBoth (depth, path, component, blanks, options) {
   var returned = renderLoadedComponentReference(depth, path, component, blanks, options)
   returned += '<p>'
-  returned += options.redundantText || 'Quoting for convenience, with any conflicts resolved in favor of the standard:'
+  returned += options.quoteComponentText
   returned += '</p>'
   returned += renderAnnotations(path, options.annotations, options)
   returned += '<blockquote>'
@@ -327,7 +327,12 @@ module.exports = function commonformHTML (form, blanks, options) {
   var version = options.version
   var depth = options.depth || 0
   var classNames = options.classNames || []
-  options.loadedComponentStyle = options.loadedComponentStyle || 'inline'
+  if (!options.quoteComponentText) {
+    options.quoteComponentText = 'Quoting for convenience, with any conflicts resolved in favor of the standard:'
+  }
+  if (!options.incorporateComponentText) {
+    options.incorporateComponentText = 'Incorporate'
+  }
   options.annotations = options.annotations || []
   if (options.ids) {
     options.headingSlugger = new GitHubSlugger()
