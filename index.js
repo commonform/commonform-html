@@ -26,11 +26,13 @@ function renderParagraph (paragraph, offset, path, blanks, options) {
         } else if (predicate.blank(element)) {
           const elementPath = path.concat('content', offset + index)
           const value = matchingValue(elementPath, blanks)
-          return (
-            '<span class="blank">' +
-            (value ? escape(value) : escape('[•]')) +
-            '</span>'
-          )
+          if (value) {
+            return '<span class="blank">' + escape(value) + '</span>'
+          } else if (options.complete) {
+            throw new Error('missing value for blank')
+          } else {
+            return '<span class="blank">' + escape('[•]') + '</span>'
+          }
         } else /* if (predicate.reference(element)) */{
           return renderReference(element.reference, options)
         }

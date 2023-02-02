@@ -25,6 +25,11 @@ function bin (stdin, stdout, stderr, argv, done) {
       describe: 'output lists',
       type: 'boolean'
     })
+    .option('complete', {
+      alias: 'c',
+      describe: 'throw an error if a blank does not have a value',
+      type: 'boolean'
+    })
     .option('ids', {
       alias: 'i',
       describe: 'output headings with IDs',
@@ -89,6 +94,7 @@ function bin (stdin, stdout, stderr, argv, done) {
   if (args.title) options.title = args.title
   if (args.html5) options.html5 = true
   if (args.lists) options.lists = true
+  if (args.complete) options.complete = true
   if (args.ids) options.ids = true
   if (args.smartify) options.smartify = true
   if (args['quote-component-text']) options.quoteComponentText = args['quote-component-text']
