@@ -23,9 +23,9 @@ function renderParagraph (paragraph, offset, path, blanks, options) {
             escape(element.definition) +
             (html5 ? '</dfn>' : '</span>')
           )
-        } else if (predicate.url(element)) {
-          const { url } = element
-          return `<a href="${escape(url)}">${escape(url)}</a>`
+        } else if (predicate.link(element)) {
+          const { link } = element
+          return `<a href="${escape(link)}">${escape(link)}</a>`
         } else if (predicate.blank(element)) {
           const elementPath = path.concat('content', offset + index)
           const value = matchingValue(elementPath, blanks)

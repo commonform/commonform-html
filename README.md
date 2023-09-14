@@ -29,7 +29,7 @@ assert.deepStrictEqual(
       },
       {
         heading: 'C',
-        form: { content: [{ url: 'https://example.com' }] }
+        form: { content: [{ link: 'https://example.com' }] }
       }
     ]
   }),
