@@ -26,6 +26,10 @@ assert.deepStrictEqual(
       {
         heading: 'B',
         form: { content: ['This is B'] }
+      },
+      {
+        heading: 'C',
+        form: { content: [{ url: 'https://example.com' }] }
       }
     ]
   }),
@@ -38,6 +42,10 @@ assert.deepStrictEqual(
     '<div class="section">',
     '<h1>B</h1>',
     '<p>This is B</p>',
+    '</div>',
+    '<div class="section">',
+    '<h1>C</h1>',
+    '<p><a href="https://example.com">https://example.com</a></p>',
     '</div>',
     '</div>'
   ]

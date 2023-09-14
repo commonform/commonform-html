@@ -23,6 +23,9 @@ function renderParagraph (paragraph, offset, path, blanks, options) {
             escape(element.definition) +
             (html5 ? '</dfn>' : '</span>')
           )
+        } else if (predicate.url(element)) {
+          const { url } = element
+          return `<a href="${escape(url)}">${escape(url)}</a>`
         } else if (predicate.blank(element)) {
           const elementPath = path.concat('content', offset + index)
           const value = matchingValue(elementPath, blanks)
@@ -206,7 +209,7 @@ function renderLoadedComponentReference (depth, path, component, blanks, options
   let returned = '<p>' + escape(options.incorporateComponentText)
   returned += ' '
   const url = component.reference.component + '/' + component.reference.version
-  returned += `<a href="${url}">`
+  returned += `<a href="${escape(url)}">`
   const meta = component.component
   returned += `${meta.publisher} ${meta.name} Version ${meta.version}`
   returned += '</a>'
