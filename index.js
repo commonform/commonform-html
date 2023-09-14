@@ -246,7 +246,7 @@ function renderComponentReference (depth, path, component, blanks, options) {
     Object.keys(substitutions.headings).length > 0 ||
     Object.keys(substitutions.blanks).length > 0
   )
-  let returned = `<p>${escape(options.incorporateComponentText)} <a href="${url}">${url}</a>`
+  let returned = `<p>${escape(options.incorporateComponentText)} <a href="${escape(url)}">${escape(url)}</a>`
   if (hasSubstitutions) {
     returned += ' substituting:</p>'
     returned += renderSubstitutions(substitutions, options)
