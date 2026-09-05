@@ -22,8 +22,10 @@
     "licensee": "^12.0.2",
     "nyc": "^15.0.1"
   },
-  "bin": "bin.js",
-  "files": [],
+  "bin": "binscript",
+  "files": [
+    "bin.js"
+  ],
   "license": "BlueOak-1.0.0",
   "repository": "commonform/commonform-html",
   "scripts": {

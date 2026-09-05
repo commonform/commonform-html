@@ -1,20 +1,11 @@
-#!/usr/bin/env node
-if (module.parent) {
-  module.exports = bin
-} else {
-  bin(
-    process.stdin,
-    process.stdout,
-    process.stderr,
-    process.argv.slice(1),
-    function (status) {
-      process.exit(status)
-    }
-  )
-}
+import yargs from 'yargs'
+import html from './index.js'
+import prepareBlanks from 'commonform-prepare-blanks'
+import { readFileSync } from 'node:fs'
+import { normalize } from 'node:path'
 
-function bin (stdin, stdout, stderr, argv, done) {
-  const args = require('yargs')
+export default function bin (stdin, stdout, stderr, argv, done) {
+  const args = yargs()
     .scriptName('commonform-html')
     .option('html5', {
       describe: 'output HTML5',
@@ -81,9 +72,7 @@ function bin (stdin, stdout, stderr, argv, done) {
 
   // Prepare fill-in-the-blank values.
   const blanks = (args.values && args.directions)
-    ? require('commonform-prepare-blanks')(
-      args.values, args.directions
-    )
+    ? prepareBlanks( args.values, args.directions)
     : []
 
   // Prepare rendering options.
@@ -121,7 +110,7 @@ function bin (stdin, stdout, stderr, argv, done) {
       // Render.
       let rendered
       try {
-        rendered = require('./')(form, blanks, options)
+        rendered = html(form, blanks, options)
       } catch (error) {
         return fail(error)
       }
@@ -137,8 +126,8 @@ function bin (stdin, stdout, stderr, argv, done) {
 
 function readJSON (file) {
   return JSON.parse(
-    require('fs').readFileSync(
-      require('path').normalize(file)
+    readFileSync(
+      normalize(file)
     )
   )
 }
