@@ -1,0 +1,12 @@
+name: Continuous Integration
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+    - run: npm install
+    - run: npm test
+      env:
+        CI: true
