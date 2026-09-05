@@ -7,7 +7,7 @@
     "commonform-group-series": "^3.0.0",
     "commonform-hash": "^1.0.0",
     "commonform-predicate": "^7.0.1",
-    "commonform-prepare-blanks": "^1.0.1",
+    "commonform-prepare-blanks": "^2.0.0",
     "commonform-smartify": "^1.0.1",
     "escape-html": "^1.0.2",
     "github-slugger": "^1.2.1",
