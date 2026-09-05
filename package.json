@@ -14,7 +14,7 @@
     "escape-html": "^1.0.2",
     "github-slugger": "^2.0.0",
     "number-to-words-en": "^1.2.5",
-    "yargs": "^17.5.1"
+    "yargs": "^18.1.0"
   },
   "devDependencies": {
     "commonform-lint": "^6.0.0",
