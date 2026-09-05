@@ -1,7 +1,7 @@
 {
   "name": "commonform-html",
   "description": "render Common Forms in HTML",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "type": "module",
   "main": "index.js",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
