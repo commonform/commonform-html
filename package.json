@@ -19,8 +19,7 @@
   "devDependencies": {
     "commonform-lint": "^6.0.0",
     "defence-cli": "^3.0.1",
-    "licensee": "^12.0.2",
-    "nyc": "^15.0.1"
+    "licensee": "^12.0.2"
   },
   "bin": "binscript",
   "files": [
@@ -29,7 +28,6 @@
   "license": "BlueOak-1.0.0",
   "repository": "commonform/commonform-html",
   "scripts": {
-    "coverage": "nyc --reporter=lcov --reporter=text npm run test",
     "licenses": "licensee --errors-only",
     "test": "defence -i javascript README.md | sed \"s!from 'commonform-html'!from './index.js'!\" | node"
   }
