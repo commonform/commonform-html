@@ -1,11 +1,10 @@
-const GitHubSlugger = require('github-slugger')
-const escape = require('escape-html')
-const group = require('commonform-group-series')
-const has = require('has')
-const hash = require('commonform-hash')
-const numberToWords = require('number-to-words-en')
-const predicate = require('commonform-predicate')
-const smartify = require('commonform-smartify')
+import GitHubSlugger from 'github-slugger'
+import escape from 'escape-html'
+import group from 'commonform-group-series'
+import hash from 'commonform-hash'
+import numberToWords from 'number-to-words-en'
+import * as predicate from 'commonform-predicate'
+import smartify from 'commonform-smartify'
 
 function renderParagraph (paragraph, offset, path, blanks, options) {
   const html5 = options.html5
@@ -185,7 +184,7 @@ function renderForm (depth, path, form, blanks, options) {
 }
 
 function renderComponent (depth, path, component, blanks, options) {
-  if (has(component, 'form')) {
+  if (Object.hasOwn(component, 'form')) {
     return renderLoadedComponent(depth, path, component, blanks, options)
   } else {
     return renderComponentReference(depth, path, component, blanks, options)
@@ -293,7 +292,7 @@ function renderAnnotations (path, annotations, options) {
     .join('')
 }
 
-module.exports = function (form, blanks, options) {
+export default function (form, blanks, options) {
   blanks = blanks || []
   options = options || {}
   const html5 = options.html5
@@ -348,10 +347,10 @@ function equal (a, b) {
 
 function containsAHeading (child) {
   return (
-    has(child, 'heading') ||
+    Object.hasOwn(child, 'heading') ||
     (
-      has(child, 'form') &&
-      child.form.content.some(element => has(element, 'form') && containsAHeading(element))
+      Object.hasOwn(child, 'form') &&
+      child.form.content.some(element => Object.hasOwn(element, 'form') && containsAHeading(element))
     )
   )
 }

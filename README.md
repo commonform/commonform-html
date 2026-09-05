@@ -3,13 +3,13 @@
 render [Common Forms](https://www.npmjs.com/package/commonform-validate) in HTML
 
 ```javascript
-const html = require('commonform-html')
+import html from 'commonform-html'
 ```
 
 Call the exported function with a Common Form, receive a string of HTML:
 
 ```javascript
-const assert = require('assert')
+import assert from 'assert'
 
 assert.deepStrictEqual(
   html({ content: ['Just a test'] }),
@@ -581,7 +581,8 @@ assert.deepStrictEqual(
 Annotations to the root of the form appear just within the root element:
 
 ```javascript
-const lint = require('commonform-lint')
+import lint from 'commonform-lint'
+
 const form = { content: ['See ', { reference: 'Nonexistent' }] }
 const annotations = lint(form)
 assert.deepStrictEqual(

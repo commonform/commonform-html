@@ -2,16 +2,17 @@
   "name": "commonform-html",
   "description": "render Common Forms in HTML",
   "version": "7.0.0",
+  "type": "module",
+  "main": "index.js",
   "author": "Kyle E. Mitchell <kyle@kemitchell.com> (https://kemitchell.com/)",
   "dependencies": {
-    "commonform-group-series": "^3.0.0",
-    "commonform-hash": "^1.0.0",
+    "commonform-group-series": "^4.0.0",
+    "commonform-hash": "^2.0.0",
     "commonform-predicate": "^7.0.1",
     "commonform-prepare-blanks": "^2.0.0",
-    "commonform-smartify": "^1.0.1",
+    "commonform-smartify": "^2.0.0",
     "escape-html": "^1.0.2",
     "github-slugger": "^1.2.1",
-    "has": "^1.0.3",
     "number-to-words-en": "^1.2.5",
     "yargs": "^17.5.1"
   },
@@ -19,22 +20,15 @@
     "commonform-lint": "^4.0.0",
     "defence-cli": "^3.0.1",
     "licensee": "^8.1.0",
-    "nyc": "^15.0.1",
-    "replace-require-self": "^1.0.0",
-    "standard": "^17.0.0",
-    "standard-markdown": "^7.1.0"
+    "nyc": "^15.0.1"
   },
-  "bin": "./bin.js",
-  "files": [
-    "bin.js",
-    "index.js"
-  ],
+  "bin": "bin.js",
+  "files": [],
   "license": "BlueOak-1.0.0",
   "repository": "commonform/commonform-html",
   "scripts": {
     "coverage": "nyc --reporter=lcov --reporter=text npm run test",
-    "lint": "standard && standard-markdown",
     "licenses": "licensee --errors-only",
-    "test": "defence README.md | replace-require-self | node"
+    "test": "defence -i javascript README.md | sed \"s!from 'commonform-html'!from './index.js'!\" | node"
   }
 }
